@@ -1,8 +1,9 @@
-import java.nio.file.Files
-import java.nio.file.Paths
 import org.apache.sshd.client.session.ClientSession
 import org.apache.sshd.client.SshClient
-import org.apache.sshd.scp.client.*
+import org.apache.sshd.scp.client.ScpClientCreator
+import org.apache.sshd.scp.client.ScpClient
+import java.nio.file.Files
+import java.nio.file.Paths
 
 plugins {
     kotlin("jvm") version "1.5.31"
@@ -74,7 +75,7 @@ tasks.named("check").configure {
     dependsOn(tasks.named("qualityCode"))
 }
 
-//copia i file da trasferire in una folder distribution
+// copia i file da trasferire in una folder distribution
 tasks.register<Copy>("copyDistribution") {
     from(layout.projectDirectory.file("src/"))
     into(layout.buildDirectory.dir("distribution"))
@@ -86,7 +87,7 @@ password da salvare nei secret di gradle
 la cartella è protetta nel client: con chmod u+x sulla cartella da i permessi per aprirla
 comandi con ssh
  */
-tasks.create("deploy"){
+tasks.create("deploy") {
     val password: String? by project
     val distributionDir = layout.buildDirectory.dir("distribution").get().asFile
     doLast {
@@ -103,11 +104,13 @@ tasks.create("deploy"){
             val creator = ScpClientCreator.instance()
             val client = creator.createScpClient(session)
 
-            client.upload(distributionDir.path,
+            client.upload(
+                distributionDir.path,
                 "/home/daniele/Desktop/python/recvFolder",
                 ScpClient.Option.Recursive,
                 ScpClient.Option.PreserveAttributes,
-                ScpClient.Option.TargetIsDirectory)
+                ScpClient.Option.TargetIsDirectory
+            )
 
             session.executeRemoteCommand("chmod u+x /home/daniele/Desktop/python/recvFolder/distribution")
 
@@ -116,7 +119,6 @@ tasks.create("deploy"){
         } catch (ex: Exception) {
             project.logger.error(ex.message)
         } finally {
-
         }
     }
 }
