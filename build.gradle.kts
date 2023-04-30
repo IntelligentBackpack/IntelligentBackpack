@@ -1,5 +1,8 @@
 import java.nio.file.Files
 import java.nio.file.Paths
+import org.apache.sshd.client.session.ClientSession
+import org.apache.sshd.client.SshClient
+import org.apache.sshd.scp.client.*
 
 plugins {
     kotlin("jvm") version "1.5.31"
@@ -46,9 +49,11 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("qualityCode") {
 }
 
 tasks.register<Delete>("cleanDoc") {
-    delete(fileTree("./").matching {
-        include("*.html")
-    })
+    delete(
+        fileTree("./").matching {
+            include("*.html")
+        }
+    )
 }
 
 tasks.register<Copy>("moveReports") {
@@ -59,7 +64,7 @@ tasks.register<Copy>("moveReports") {
 }
 
 tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("generateDocumentation") {
-    if(!Files.exists(Paths.get("./doc")))
+    if (!Files.exists(Paths.get("./doc")))
         File("./doc").mkdir()
     command = "-m pydoc -w .\\"
     finalizedBy("moveReports")
@@ -67,4 +72,51 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("generateDocument
 
 tasks.named("check").configure {
     dependsOn(tasks.named("qualityCode"))
+}
+
+//copia i file da trasferire in una folder distribution
+tasks.register<Copy>("copyDistribution") {
+    from(layout.projectDirectory.file("src/"))
+    into(layout.buildDirectory.dir("distribution"))
+}
+
+/*
+sposta correttamente i file
+password da salvare nei secret di gradle
+la cartella è protetta nel client: con chmod u+x sulla cartella da i permessi per aprirla
+comandi con ssh
+ */
+tasks.create("deploy"){
+    val password: String? by project
+    val distributionDir = layout.buildDirectory.dir("distribution").get().asFile
+    doLast {
+        val sshClient = SshClient.setUpDefaultClient()
+        try {
+            sshClient.start()
+            val session: ClientSession = sshClient.connect("daniele", "ipaddress", 22)
+                .verify(1000)
+                .session
+
+            session.addPasswordIdentity(password)
+            session.auth().verify(1000)
+
+            val creator = ScpClientCreator.instance()
+            val client = creator.createScpClient(session)
+
+            client.upload(distributionDir.path,
+                "/home/daniele/Desktop/python/recvFolder",
+                ScpClient.Option.Recursive,
+                ScpClient.Option.PreserveAttributes,
+                ScpClient.Option.TargetIsDirectory)
+
+            session.executeRemoteCommand("chmod u+x /home/daniele/Desktop/python/recvFolder/distribution")
+
+            session.close()
+            sshClient.close()
+        } catch (ex: Exception) {
+            project.logger.error(ex.message)
+        } finally {
+
+        }
+    }
 }
