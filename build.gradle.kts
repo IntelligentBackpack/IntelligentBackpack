@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 plugins {
     kotlin("jvm") version "1.5.31"
     id("ru.vyarus.use-python") version "3.0.0"
@@ -36,4 +39,32 @@ python {
 gitSemVer {
     buildMetadataSeparator.set("-")
     maxVersionLength.set(20)
+}
+
+tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("qualityCode") {
+    command = "-m flake8 src"
+}
+
+tasks.register<Delete>("cleanDoc") {
+    delete(fileTree("./").matching {
+        include("*.html")
+    })
+}
+
+tasks.register<Copy>("moveReports") {
+    from("./")
+    include("*.html")
+    into(layout.buildDirectory.dir("doc"))
+    finalizedBy("cleanDoc")
+}
+
+tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("generateDocumentation") {
+    if(!Files.exists(Paths.get("./doc")))
+        File("./doc").mkdir()
+    command = "-m pydoc -w .\\"
+    finalizedBy("moveReports")
+}
+
+tasks.named("check").configure {
+    dependsOn(tasks.named("qualityCode"))
 }
