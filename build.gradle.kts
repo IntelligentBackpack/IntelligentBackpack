@@ -4,15 +4,19 @@ import org.apache.sshd.scp.client.ScpClientCreator
 import org.apache.sshd.scp.client.ScpClient
 import java.nio.file.Files
 import java.nio.file.Paths
+import kotlin.collections.listOf
+import kotlin.streams.toList
 
 plugins {
     kotlin("jvm") version "1.5.31"
     id("ru.vyarus.use-python") version "3.0.0"
+    id("io.github.DiLilloDaniele.gradle-python-testing") version "1.4.1"
     alias(libs.plugins.gitSemVer)
     alias(libs.plugins.kotlin.qa)
 }
 
 group = "org.IntelligentBackpack"
+val flakeExcludeTypes = listOf<String>("E501")
 
 repositories {
     mavenCentral()
@@ -29,15 +33,28 @@ buildscript {
     }
 }
 
+tasks.named("build").configure {
+    dependsOn(tasks.named("pipInstall"))
+}
+
 python {
     pip("pycco:0.6.0")
     pip("coverage:7.2.2")
     pip("flake8:6.0.0")
     pip("gpiozero:1.6.2")
-    pip("mfrc522:0.0.7")
+    pip("paho-mqtt:1.6.1")
+    pip("azure-iot-device:3.0.0b2")
+    // pip("pi-rc522:2.2.1")
     minPythonVersion = "3.2"
     minPipVersion = "9.0.1"
     python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.VIRTUALENV
+}
+
+pytest {
+    testSrc.set("src")
+    minCoveragePercValue.set(80)
+    useVirtualEnv.set(true)
+    virtualEnvFolder.set("")
 }
 
 gitSemVer {
@@ -46,7 +63,15 @@ gitSemVer {
 }
 
 tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("qualityCode") {
-    command = "-m flake8 src"
+    command = "-m flake8 --extend-ignore ${flakeExcludeTypes.joinToString(separator = ", ")} src"
+}
+
+tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execSub") {
+    command = "src/main/python/sample/iot_hub_device_sub.py"
+}
+
+tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execPub") {
+    command = "src/main/python/sample/iot_hub_device.py"
 }
 
 tasks.register<Delete>("cleanDoc") {
@@ -94,7 +119,7 @@ tasks.create("deploy") {
         val sshClient = SshClient.setUpDefaultClient()
         try {
             sshClient.start()
-            val session: ClientSession = sshClient.connect("daniele", "ipaddress", 22)
+            val session: ClientSession = sshClient.connect("pi", "192.168.1.40", 22)
                 .verify(1000)
                 .session
 
@@ -106,13 +131,13 @@ tasks.create("deploy") {
 
             client.upload(
                 distributionDir.path,
-                "/home/daniele/Desktop/python/recvFolder",
+                "/home/pi/Desktop/intelligentbackpack",
                 ScpClient.Option.Recursive,
                 ScpClient.Option.PreserveAttributes,
                 ScpClient.Option.TargetIsDirectory
             )
 
-            session.executeRemoteCommand("chmod u+x /home/daniele/Desktop/python/recvFolder/distribution")
+            session.executeRemoteCommand("chmod -R u+x /home/pi/Desktop/intelligentbackpack/distribution")
 
             session.close()
             sshClient.close()
@@ -121,4 +146,21 @@ tasks.create("deploy") {
         } finally {
         }
     }
+}
+
+tasks.create("createPackages") {
+    var numPackages = 0
+    val path = "$projectDir/src/"
+    val dirs = Files.walk(Paths.get(path))
+        .filter { Files.isDirectory(it) && !Files.isSymbolicLink(it) }.toList()
+
+    for (folder in dirs) {
+        val path = "${folder.toAbsolutePath()}/__init__.py"
+        if (!Files.exists(Paths.get(path))) {
+            File(path).createNewFile()
+            numPackages ++
+        }
+    }
+
+    println("Created $numPackages packages")
 }
