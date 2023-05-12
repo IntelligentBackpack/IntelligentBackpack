@@ -26,3 +26,11 @@ replay_pid*
 .gradle/
 .idea/
 build/
+src.egg-info/
+dist/
+
+**/__init__*
+
+db.json
+coverage.json
+.coverage
