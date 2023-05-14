@@ -1,47 +1,49 @@
 # ping the server and when the connection is on, i send the database update (insert or remove elements) with one call???
 import requests
 import time
-import asyncio
 from threading import Thread
-
+import json
 
 class NetworkThread (Thread):
 
-    def __init__(self, nome, durata):
+    def __init__(self, nome, durata, cv, queue):
         Thread.__init__(self)
         self.nome = nome
         self.durata = durata
+        self.cv = cv
+        self.queue = queue
 
     def run(self):
         print("Thread '" + self.name + "' avviato")
-        time.sleep(self.durata)
+        with self.cv:
+            while(True):
+                if self.queue.empty():
+                    self.cv.wait()
+                request = queue.get()
+                element = json.loads(json.dumps(request))
+                executeCalls(element["type"], element["url"], element["payload"])
+
         print("Thread '" + self.name + "' terminato")
 
-
-# must be async
-async def performRequest():
-    print("START CALL...")
+def getCall(url):
     try:
-        r = requests.get('http://echfo.jsontest.com/key/value/one/two')
-        print(r.text)
+        response = requests.get(url)
+        return response
     except Exception as e:
-        print("Error: do another request, " + e)
-        # await asyncio.sleep(5)
-        time.sleep(5)
-        print("Terminated wait, try another")
+        print("Error")
+        print(e)
 
-
-async def a_main():
-    print("Hey")
-    # Anything else to run
-    while (True):
-        # from python 3.7, asyncio.create_task(...)
-        task = asyncio.ensure_future(performRequest())
-        # wait for the task to complete
-        await task
-        break
-
-
-async def executeCalls():
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(a_main())
+def executeCalls(type, url, payload):
+    terminated = False
+    while(not(terminated)):
+        try:
+            headers={'content-type': 'application/json'}
+            if(type == "PATCH"):
+                requests.patch(url, json.dumps(payload), headers=headers)
+            elif(type == "DELETE"):
+                requests.delete(url, headers=headers)
+            terminated = True
+            time.sleep(5)
+        except Exception as e:
+            print("Error")
+            print(e)
