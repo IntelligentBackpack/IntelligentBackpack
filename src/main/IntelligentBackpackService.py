@@ -1,18 +1,25 @@
 # application service that use rfid module and network calls and repository
-# from src.main.python.infrastructureServices import RestModule
-# import importlib
-# import asyncio
-# import time
 from python.infrastructureServices.repositories.RepositoryGateway import RepositoryGatewayImpl
+from python.domainModel.domainServices.BackpackLogic import BackpackLogicService
+from threading import Condition
+from python.infrastructureServices.RestModule import NetworkThread
+from python.infrastructureServices.RFIDModule import RFIDReader
+import queue
 
-'''
-thread1 = RestModule.NetworkThread("Thread#1", 5)
-thread1.start()
-print("Ora")
-print("Scrivo")
-print("Cose")
-thread1.join()
-'''
+def consumeTag(isbn, tag):
+    print(tag)
 
 if __name__ == "__main__":
-    repo = RepositoryGatewayImpl()
+    queue_requests = queue.Queue()
+    repo = RepositoryGatewayImpl("https://intelligentbackpack-d463a-default-rtdb.europe-west1.firebasedatabase.app", queue_requests)
+    domainLogic = BackpackLogicService(repo)
+    manageTag = lambda tag : domainLogic.manageElement(tag)
+
+    cv = Condition()
+    rfid_thread = RFIDReader(manageTag, cv)
+    network_thread = NetworkThread("Thread#Network", 5, cv)
+    network_thread.start()
+    rfid_thread.start()
+    
+    rfid_thread.join()
+    network_thread.join()
