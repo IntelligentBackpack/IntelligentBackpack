@@ -44,7 +44,7 @@ python {
     pip("coverage:7.2.2")
     pip("flake8:6.0.0")
     // pip("gpiozero:1.6.2")
-    pip("azure-servicebus:7.9.0")
+    // pip("azure-servicebus:7.9.0")
     // pip("pi-rc522:2.2.1")
     minPythonVersion = "3.2"
     minPipVersion = "9.0.1"
@@ -84,10 +84,6 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("cleanSetup") {
 }
 
 tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execMain") {
-    command = "-m src.main.python.infrastructureServices.repositories.RepositoryGateway.py"
-}
-
-tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execPolicy") {
     workDir = "./src/main/"
     command = "-m IntelligentBackpackService"
 }
