@@ -1,23 +1,27 @@
 from tinydb import TinyDB, Query, where
 import json
 
+
 class LocalRepositoryImpl:
 
-    def __init__(self, name):
+    def __init__(self, name, url):
         self.name = name
-        self.db = TinyDB('../../' + name + '.json')
+        self.db = TinyDB(url)
         self.Tags = Query()
 
-    def addElement(self, value):
+    def add_element(self, value):
         self.db.insert({"tag": value})
 
-    def removeElement(self, value):
+    def remove_element(self, value):
         self.db.remove(where('tag') == value)
 
-    def getAllTags(self):
+    def get_all_tags(self):
         records = self.db.search(self.Tags.tag.exists())
-        return list(map(lambda record : record["tag"], json.loads(json.dumps(records))))
+        return list(map(lambda record: record["tag"], json.loads(json.dumps(records))))
 
-    def findElement(self, value):
+    def find_element(self, value):
         record = self.db.search(where("tag") == value)
         return record != []
+
+    def close(self):
+        self.db.close()
