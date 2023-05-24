@@ -1,5 +1,6 @@
 from ..valueObjects.Book import Book
 
+
 class Backpack:
 
     def __init__(self):
@@ -15,7 +16,7 @@ class Backpack:
         return
 
     def remove_book(self, book: Book):
-        self.remove_book(book)
+        self.books_lastly_added.remove(book)
         return
 
     def check_book(self, book: Book):

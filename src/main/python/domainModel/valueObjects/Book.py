@@ -7,7 +7,6 @@
 
 class Book:
 
-    def __init__(self, name, isbn, tagId):
-        self.name = name
+    def __init__(self, isbn, tagId):
         self.isbn = isbn
         self.tagId = tagId
