@@ -2,24 +2,39 @@
 from python.infrastructureServices.repositories.RepositoryGateway import RepositoryGatewayImpl
 from python.domainModel.domainServices.BackpackLogic import BackpackLogicService
 from threading import Condition
-from python.infrastructureServices.RestModule import NetworkThread
-from python.infrastructureServices.RFIDModule import RFIDReader
+from python.infrastructureServices.modules.RestModule import NetworkThread
+# from python.infrastructureServices.RFIDModule import RFIDReader
+from python.infrastructureServices.modules.HubIoTModule import HubIotThread
 import queue
+import time
+from python.application.serviceLocator.backpack_service_locator import ServiceLocator
 
-def consumeTag(isbn, tag):
-    print(tag)
 
 if __name__ == "__main__":
-    queue_requests = queue.Queue()
-    repo = RepositoryGatewayImpl("https://intelligentbackpack-d463a-default-rtdb.europe-west1.firebasedatabase.app", queue_requests)
-    domainLogic = BackpackLogicService(repo)
-    manageTag = lambda tag : domainLogic.manageElement(tag)
 
-    cv = Condition()
-    rfid_thread = RFIDReader(manageTag, cv)
-    network_thread = NetworkThread("Thread#Network", 5, cv)
-    network_thread.start()
-    rfid_thread.start()
-    
-    rfid_thread.join()
-    network_thread.join()
+    serviceLocator = ServiceLocator()
+    queue_requests = serviceLocator.get_messages_queue()
+    domainLogic = BackpackLogicService(serviceLocator.repository)
+
+    try:
+        # net_thread.start()
+        # hub_thread.start()
+        for module in serviceLocator.get_modules():
+            module.start()
+        while(True):
+            request = queue_requests.get()
+            if request == "EXIT":
+                raise KeyboardInterrupt()
+            elif request["type"] is not None:
+                if request["type"] == "REGISTER":
+                    print("REGISTRATO")
+                    domainLogic.register(request["payload"])
+                if request["type"] == "UNREGISTER":
+                    domainLogic.unregister()
+                if request["type"] == "TAG_READ":
+                    domainLogic.manage_element("", request["payload"])
+
+    except KeyboardInterrupt:
+        # Exit application because user indicated they wish to exit.
+        # This will have cancelled `main()` implicitly.
+        print("EXIT")
