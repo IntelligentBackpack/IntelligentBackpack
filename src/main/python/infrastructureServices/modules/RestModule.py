@@ -4,28 +4,23 @@ import time
 from threading import Thread
 import json
 
+
 class NetworkThread (Thread):
 
-    def __init__(self, nome, durata, cv, queue):
+    def __init__(self, nome, queue):
         Thread.__init__(self)
         self.nome = nome
-        self.durata = durata
-        self.cv = cv
         self.queue = queue
 
     def run(self):
         print("Thread '" + self.name + "' avviato")
-        with self.cv:
-            while(True):
-                if self.queue.empty():
-                    self.cv.wait()
-                request = queue.get()
-                element = json.loads(json.dumps(request))
-                executeCalls(element["type"], element["url"], element["payload"])
+        while (True):
+            request = self.queue.get()
+            element = json.loads(json.dumps(request))
+            execute_calls(element["type"], element["url"], element["payload"])
 
-        print("Thread '" + self.name + "' terminato")
 
-def getCall(url):
+def get_call(url):
     try:
         response = requests.get(url)
         return response
@@ -33,17 +28,19 @@ def getCall(url):
         print("Error")
         print(e)
 
-def executeCalls(type, url, payload):
+
+def execute_calls(type, url, payload):
     terminated = False
-    while(not(terminated)):
+    while not (terminated):
         try:
-            headers={'content-type': 'application/json'}
-            if(type == "PATCH"):
+            headers = {'content-type': 'application/json'}
+            if type == "PATCH":
                 requests.patch(url, json.dumps(payload), headers=headers)
-            elif(type == "DELETE"):
+            elif type == "DELETE":
                 requests.delete(url, headers=headers)
             terminated = True
             time.sleep(5)
         except Exception as e:
             print("Error")
             print(e)
+        time.sleep(10)
