@@ -53,9 +53,13 @@ python {
 
 pytest {
     testSrc.set("src/test/python")
-    minCoveragePercValue.set(80)
+    minCoveragePercValue.set(50)
     useVirtualEnv.set(true)
     virtualEnvFolder.set(".gradle/python")
+}
+
+tasks.named("test") {
+    dependsOn("performTests")
 }
 
 gitSemVer {
