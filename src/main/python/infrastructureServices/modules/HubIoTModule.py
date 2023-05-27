@@ -3,7 +3,9 @@
 # Licensed under the MIT License. See License.txt in the project root for
 # license information.
 # --------------------------------------------------------------------------
-"""This sample demonstrates a simple cloud to device receive using an IoTHubSession."""
+"""This module represents the component device that connects to Azure IoT Hub using an IoTHubSession
+and the thread definition that keeps listening incoming messages from cloud."""
+
 
 import asyncio
 from azure.iot.device import IoTHubSession
@@ -15,6 +17,9 @@ CONNECTION_STRING = "HostName=IntelligentBackpackHub.azure-devices.net;DeviceId=
 TOTAL_MESSAGES_RECEIVED = 0
 
 
+"""
+Thread that performs incoming messages listening.
+"""
 class HubIotThread (Thread):
 
     def __init__(self, messages_queue):
@@ -32,6 +37,14 @@ class HubIotThread (Thread):
             print("Received {} messages in total".format(TOTAL_MESSAGES_RECEIVED))
 
 
+    '''
+    Main function that use IoTHubSession to connect to the relative IoT Hub cloud device and listens
+    all the incoming messages from the cloud, that could be different:
+    - REGISTER: sent with the email of the user that wants to registrate this device
+    - EXIT: message that force the exit of the application
+    - UNREGISTER: sent with the email of the user that wants to unregistrate this device
+    - NEW_DATA: sent with the data that will be added to the device. Used only for debug purpose
+    '''
     async def main(self):
         global TOTAL_MESSAGES_RECEIVED
         print("Starting C2D sample")
@@ -43,7 +56,7 @@ class HubIotThread (Thread):
                 # print("Waiting to receive messages...")
                 async for message in messages:
                     TOTAL_MESSAGES_RECEIVED += 1
-                    # print("Message received with payload: {}".format(message.payload))
+                    print("Message received with payload: {}".format(message.payload))
                     # print("Email is {}".format(message.payload.split(":")[1]))
                     if message.payload == "EXIT":
                         self.messages_queue.put("EXIT")
@@ -67,7 +80,7 @@ class HubIotThread (Thread):
                     if "NEW_DATA" in message.payload:
                         message_to_send = {
                             "type": "TAG_READ",
-                            "payload": "fedfwefwe")
+                            "payload": "fedfwefwe"
                         }
                         self.messages_queue.put(message_to_send)
 
