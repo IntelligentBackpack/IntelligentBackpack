@@ -8,6 +8,9 @@ def get_remote_db_url():
     return "https://intelligentbackpack-d463a-default-rtdb.europe-west1.firebasedatabase.app"
 
 
+'''
+Class Service Locator that manage all dependencies and help to performs dependency injection
+'''
 class ServiceLocator:
 
     def __init__(self):
