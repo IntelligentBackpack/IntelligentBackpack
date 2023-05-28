@@ -94,12 +94,31 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execMain") {
 }
 
 tasks.register<Delete>("cleanDoc") {
-    delete("./docs")
+    val directoryPath = "$projectDir/docs"
+    val file = File(directoryPath)
+    if (file.isDirectory) {
+        delete(file)
+    }
+}
+
+tasks.register<Delete>("deleteMovedDocumentation") {
+    val directoryPath = "$projectDir/docs/python"
+    val file = File(directoryPath)
+    if (file.isDirectory) {
+        delete(file)
+    }
+}
+
+tasks.register<Copy>("moveReports") {
+    from(layout.projectDirectory.file("./docs/python"))
+    into(layout.projectDirectory.dir("./docs"))
 }
 
 tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("generateDocumentation") {
     dependsOn("cleanDoc")
     command = "-m pdoc --html ./src/main/python --output-dir ./docs"
+    finalizedBy("moveReports")
+    finalizedBy("deleteMovedDocumentation")
 }
 
 tasks.named("check").configure {
