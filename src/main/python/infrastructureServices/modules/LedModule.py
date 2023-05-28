@@ -1,8 +1,8 @@
-from gpiozero import LED
+# from gpiozero import LED
 from time import sleep
 
-
 class RFIDReader:
+
     def __init__(self):
         self.led = LED(17)
 

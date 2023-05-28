@@ -17,16 +17,27 @@ CONNECTION_STRING = "HostName=IntelligentBackpackHub.azure-devices.net;DeviceId=
 TOTAL_MESSAGES_RECEIVED = 0
 
 
-"""
-Thread that performs incoming messages listening.
-"""
 class HubIotThread (Thread):
+    """
+    Thread that performs incoming messages listening.
+    """
 
     def __init__(self, messages_queue):
+        """
+        Constructor method that create the thread object of this module
+            Parameters:
+                messages_queue (queue): The synchronized queue to send all the received messages from the cloud
+
+            Returns:
+                void
+        """
         Thread.__init__(self)
         self.messages_queue = messages_queue
 
     def run(self):
+        """
+        Method that executes the thread
+        """
         try:
             asyncio.run(self.main())
         except KeyboardInterrupt or Exception:
@@ -37,15 +48,15 @@ class HubIotThread (Thread):
             print("Received {} messages in total".format(TOTAL_MESSAGES_RECEIVED))
 
 
-    '''
-    Main function that use IoTHubSession to connect to the relative IoT Hub cloud device and listens
-    all the incoming messages from the cloud, that could be different:
-    - REGISTER: sent with the email of the user that wants to registrate this device
-    - EXIT: message that force the exit of the application
-    - UNREGISTER: sent with the email of the user that wants to unregistrate this device
-    - NEW_DATA: sent with the data that will be added to the device. Used only for debug purpose
-    '''
     async def main(self):
+        """
+       Main function that use IoTHubSession to connect to the relative IoT Hub cloud device and listens
+       all the incoming messages from the cloud, that could be different:
+       - REGISTER: sent with the email of the user that wants to registrate this device
+       - EXIT: message that force the exit of the application
+       - UNREGISTER: sent with the email of the user that wants to unregistrate this device
+       - NEW_DATA: sent with the data that will be added to the device. Used only for debug purpose
+       """
         global TOTAL_MESSAGES_RECEIVED
         print("Starting C2D sample")
         print("Press Ctrl-C to exit")
