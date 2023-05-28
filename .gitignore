@@ -32,5 +32,8 @@ dist/
 **/__init__*
 
 db.json
+databaseTest.json
 coverage.json
 .coverage
+
+**/__pycache__

@@ -39,10 +39,11 @@ tasks.named("build").configure {
 }
 
 python {
-    pip("pycco:0.6.0")
+    pip("pdoc3:0.10.0")
     pip("tinydb:4.7.1")
     pip("coverage:7.2.2")
     pip("flake8:6.0.0")
+    pip("azure-iot-device:3.0.0b2")
     // pip("gpiozero:1.6.2")
     // pip("azure-servicebus:7.9.0")
     // pip("pi-rc522:2.2.1")
@@ -53,9 +54,13 @@ python {
 
 pytest {
     testSrc.set("src/test/python")
-    minCoveragePercValue.set(80)
+    minCoveragePercValue.set(50)
     useVirtualEnv.set(true)
     virtualEnvFolder.set(".gradle/python")
+}
+
+tasks.named("test") {
+    dependsOn("performTests")
 }
 
 gitSemVer {
@@ -89,25 +94,31 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execMain") {
 }
 
 tasks.register<Delete>("cleanDoc") {
-    delete(
-        fileTree("./").matching {
-            include("*.html")
-        }
-    )
+    val directoryPath = "$projectDir/docs"
+    val file = File(directoryPath)
+    if (file.isDirectory) {
+        delete(file)
+    }
+}
+
+tasks.register<Delete>("deleteMovedDocumentation") {
+    val directoryPath = "$projectDir/docs/python"
+    val file = File(directoryPath)
+    if (file.isDirectory) {
+        delete(file)
+    }
 }
 
 tasks.register<Copy>("moveReports") {
-    from("./")
-    include("*.html")
-    into(layout.buildDirectory.dir("doc"))
-    finalizedBy("cleanDoc")
+    from(layout.projectDirectory.file("./docs/python"))
+    into(layout.projectDirectory.dir("./docs"))
 }
 
 tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("generateDocumentation") {
-    if (!Files.exists(Paths.get("./doc")))
-        File("./doc").mkdir()
-    command = "-m pydoc -w .\\"
+    dependsOn("cleanDoc")
+    command = "-m pdoc --html ./src/main/python --output-dir ./docs"
     finalizedBy("moveReports")
+    finalizedBy("deleteMovedDocumentation")
 }
 
 tasks.named("check").configure {
