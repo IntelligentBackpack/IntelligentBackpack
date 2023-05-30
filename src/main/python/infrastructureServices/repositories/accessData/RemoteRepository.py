@@ -1,4 +1,4 @@
-from python.infrastructureServices.modules.RestModule import get_call
+from ...modules.RestModule import get_call
 
 
 class RemoteRepositoryImpl:

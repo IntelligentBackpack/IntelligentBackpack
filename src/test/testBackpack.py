@@ -1,7 +1,6 @@
 import unittest
-from src.main.python.domainModel.entities.Backpack import Backpack
-from src.main.python.domainModel.valueObjects.Book import Book
-
+from ..main.python.domainModel.valueObjects.Book import Book
+from ..main.python.domainModel.entities.Backpack import Backpack
 
 class TestBackpack(unittest.TestCase):
 
@@ -15,13 +14,13 @@ class TestBackpack(unittest.TestCase):
         self.assertEqual(value, email)
 
     def test_add_book(self):
-        book = Book("nameBook", "123", "5")
+        book = Book("nameBook", "123")
         self.backpack.add_book(book)
         value = self.backpack.check_book(book)
         self.assertEqual(value, True)
 
     def test_remove_book(self):
-        book = Book("nameBook", "123", "5")
+        book = Book("nameBook", "123")
         self.backpack.add_book(book)
         self.backpack.remove_book(book)
         value = self.backpack.check_book(book)

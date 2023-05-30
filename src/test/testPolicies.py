@@ -1,8 +1,8 @@
 import unittest
-from src.main.python.domainModel.entities.Backpack import Backpack
-from src.main.python.domainModel.valueObjects.Book import Book
-from src.main.python.domainModel.policies.InsertNewObjectPolicy import CanInsertNewObject
-from src.main.python.infrastructureServices.factories.RepositoryFactory import local_repository_gateway
+from ..main.python.domainModel.entities.Backpack import Backpack
+from ..main.python.domainModel.valueObjects.Book import Book
+from ..main.python.domainModel.policies.InsertNewObjectPolicy import CanInsertNewObject
+from ..main.python.infrastructureServices.factories.RepositoryFactory import local_repository_gateway
 
 
 class TestBackpack(unittest.TestCase):
@@ -16,12 +16,12 @@ class TestBackpack(unittest.TestCase):
         self.repo.close_local()
 
     def test_check_validity_empty(self):
-        book = Book("nameBook", "123", "5")
+        book = Book("nameBook", "123")
         value = self.canInsertNewObject.check_validity(self.repo, self.backpack, book)
         self.assertEqual(value, True)
 
     def test_check_validity_full(self):
-        book = Book("nameBook", "123", "5")
+        book = Book("nameBook", "123")
         self.backpack.add_book(book)
         value = self.canInsertNewObject.check_validity(self.repo, self.backpack, book)
         self.assertEqual(value, False)

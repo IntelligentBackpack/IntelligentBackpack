@@ -1,5 +1,5 @@
 import unittest
-from src.main.python.infrastructureServices.repositories.accessData.LocalRepository import LocalRepositoryImpl
+from ..main.python.infrastructureServices.repositories.accessData.LocalRepository import LocalRepositoryImpl
 
 
 class TestLocalDB(unittest.TestCase):

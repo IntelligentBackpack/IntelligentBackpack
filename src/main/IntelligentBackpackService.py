@@ -9,7 +9,6 @@ import queue
 import time
 from python.application.serviceLocator.backpack_service_locator import ServiceLocator
 
-
 if __name__ == "__main__":
 
     serviceLocator = ServiceLocator()
@@ -17,8 +16,6 @@ if __name__ == "__main__":
     domainLogic = BackpackLogicService(serviceLocator.repository)
 
     try:
-        # net_thread.start()
-        # hub_thread.start()
         for module in serviceLocator.get_modules():
             module.start()
         while(True):
