@@ -1,6 +1,6 @@
 from time import sleep
-# from mfrc522 import SimpleMFRC522
-# import GPIO
+from mfrc522 import SimpleMFRC522
+import RPi.GPIO as GPIO
 from threading import Thread
 
 
@@ -35,11 +35,12 @@ class RFIDReader(Thread):
                 # execute the high order function
                 message_to_send = {
                     "type": "TAG_READ",
-                    "payload": ""
+                    "payload": text
                 }
                 self.queue_messages.put(message_to_send)
                 sleep(5)
 
         except KeyboardInterrupt:
-            GPIO.cleanup()
             raise
+        finally:
+            GPIO.cleanup()
