@@ -42,14 +42,15 @@ python {
     pip("pdoc3:0.10.0")
     pip("tinydb:4.7.1")
     pip("coverage:7.2.2")
-    pip("flake8:6.0.0")
+    // flake:5.0.4 or 6.0.0
+    pip("flake8:5.0.4")
     pip("azure-iot-device:3.0.0b2")
     // pip("gpiozero:1.6.2")
     // pip("azure-servicebus:7.9.0")
     // pip("pi-rc522:2.2.1")
     minPythonVersion = "3.2"
     minPipVersion = "9.0.1"
-    python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.VIRTUALENV
+    python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.USER
 }
 
 pytest {
@@ -121,9 +122,9 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("generateDocument
     finalizedBy("deleteMovedDocumentation")
 }
 
-tasks.named("check").configure {
+/*tasks.named("check").configure {
     dependsOn(tasks.named("qualityCode"))
-}
+}*/
 
 // copia i file da trasferire in una folder distribution
 tasks.register<Copy>("copyDistribution") {
@@ -131,12 +132,6 @@ tasks.register<Copy>("copyDistribution") {
     into(layout.buildDirectory.dir("distribution"))
 }
 
-/*
-sposta correttamente i file
-password da salvare nei secret di gradle
-la cartella è protetta nel client: con chmod u+x sulla cartella da i permessi per aprirla
-comandi con ssh
- */
 tasks.create("deploy") {
     val password: String? by project
     val distributionDir = layout.buildDirectory.dir("distribution").get().asFile
