@@ -1,5 +1,5 @@
 # contains all threads to start as static array of singletons
-from ...infrastructureServices.modules import RestModule, LedModule, HubIoTModule
+from ...infrastructureServices.modules import RestModule, RFIDModule, HubIoTModule
 from ..dependencyInjection.get_sync_utils import SyncUtils
 from ...infrastructureServices.repositories.RepositoryGateway import RepositoryGatewayImpl
 
@@ -29,13 +29,14 @@ class ServiceLocator:
         """
         self.sync_objects = SyncUtils()
         hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages)
+        rfid_thread = RFIDModule.RFIDReader(self.sync_objects.queue_messages)
         network_thread = RestModule.NetworkThread("Thread#Network", self.sync_objects.queue_requests)
         network_thread.setDaemon(True)
 
         self.repository = RepositoryGatewayImpl("db")
         self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests)
 
-        self.modules = [hub_thread, network_thread]
+        self.modules = [hub_thread, network_thread, rfid_thread]
 
     def get_repository(self):
         """
