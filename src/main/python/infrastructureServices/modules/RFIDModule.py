@@ -32,8 +32,18 @@ class RFIDReader(Thread):
                 print("Hold a tag near the reader")
                 id, text = self.reader.read()
                 print("ID: %s\nText: %s" % (id, text))
-                chars = list(id)
-                value_to_send = chars[:2] + ":" + chars[2:4] + ":" + chars[4:6] + ":" + chars[6:8] + ":" + chars[8:10] + ":" + chars[10:12]
+                chars = str(id)
+                if len(chars) < 14:
+                    counter = 14 - len(chars)
+                    while counter < 14:
+                        chars = chars + "0"
+                        counter = counter + 1
+                value_to_send = chars[:2]
+                cont = 2
+                while cont < 14:
+                    next_index = cont + 2
+                    value_to_send = value_to_send + ":" + chars[cont:next_index]
+                    cont = cont + 2
                 # execute the high order function
                 message_to_send = {
                     "type": "TAG_READ",
