@@ -35,6 +35,7 @@ class RemoteRepositoryImpl:
         if user is "":
             return
         print("AGGIUNGO ELEMENTO DA INVIARE")
+        user = user.replace(".", "-")
         new_request = {
             "type": "PATCH",
             "url": self.service_url + "/" + user + "/" + self.hash + ".json",
@@ -59,6 +60,7 @@ class RemoteRepositoryImpl:
         """
         if user is "":
             return
+        user = user.replace(".", "-")
         new_request = {
             "type": "DELETE",
             "url": self.service_url + "/" + user + "/" + self.hash + "/" + str(value) + ".json",
@@ -82,5 +84,6 @@ class RemoteRepositoryImpl:
         """
         if user is "":
             return
+        user = user.replace(".", "-")
         response = get_call(self.service_url + "/" + user + "/" + self.hash + "/" + str(value) + ".json")
         return response.json() is not None
