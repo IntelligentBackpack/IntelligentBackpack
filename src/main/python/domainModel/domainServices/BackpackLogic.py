@@ -75,11 +75,15 @@ class BackpackLogicService:
     def register(self, user):
         """
         Method that register the user owner
-        :param user: the
-        :return:
+        :param user: the username string
+        :return: none
         """
         self.backpack.set_user(user)
         self.repository.set_user(user)
 
     def unregister(self):
+        """
+        Method that unregister the user
+        :return: none
+        """
         self.backpack.set_user("")
