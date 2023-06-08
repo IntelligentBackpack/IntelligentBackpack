@@ -22,7 +22,7 @@ class CanInsertNewObject(PolicyAB):
         if backpack.check_book(book):
             return False
         if isinstance(repository, RepositoryAB):
-            value = repository.find_element_into_repository(book)
+            value = repository.find_element_into_repository(book.tagId)
             if value:
                 return False
             else:
