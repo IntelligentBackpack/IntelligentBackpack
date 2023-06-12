@@ -6,14 +6,15 @@
 """This module represents the component device that connects to Azure IoT Hub using an IoTHubSession
 and the thread definition that keeps listening incoming messages from cloud."""
 
-
+import calendar
+import time
 import asyncio
 from azure.iot.device import IoTHubSession
 from threading import Thread
 import queue
 
 
-CONNECTION_STRING = "HostName=IntelligentBackpackHub.azure-devices.net;DeviceId=raspTest;SharedAccessKey=NUNHoJX5KVIDuGCRg3fq6e7PAg6R9oDMu0zcdGg+IzY="
+CONNECTION_STRING = "HostName=IntelligentBackpackHub.azure-devices.net;"
 TOTAL_MESSAGES_RECEIVED = 0
 
 
@@ -22,7 +23,7 @@ class HubIotThread (Thread):
     Thread that performs incoming messages listening.
     """
 
-    def __init__(self, messages_queue):
+    def __init__(self, messages_queue, device_id, primary_key):
         """
         Constructor method that create the thread object of this module
             Parameters:
@@ -32,6 +33,7 @@ class HubIotThread (Thread):
                 void
         """
         Thread.__init__(self)
+        self.connection_string = CONNECTION_STRING + "DeviceId=" + device_id + ";SharedAccessKey=" + primary_key
         self.messages_queue = messages_queue
 
     def run(self):
@@ -61,13 +63,16 @@ class HubIotThread (Thread):
         print("Starting C2D sample")
         print("Press Ctrl-C to exit")
         print("Connecting to IoT Hub...")
-        async with IoTHubSession.from_connection_string(CONNECTION_STRING) as session:
+        async with IoTHubSession.from_connection_string(self.connection_string) as session:
             print("Connected to IoT Hub")
             async with session.messages() as messages:
                 # print("Waiting to receive messages...")
                 async for message in messages:
                     TOTAL_MESSAGES_RECEIVED += 1
+                    current_GMT = time.gmtime()
+                    time_stamp = calendar.timegm(current_GMT)
                     print("Message received with payload: {}".format(message.payload))
+                    print("TIMESTAMP: {}".format(time_stamp))
                     # print("Email is {}".format(message.payload.split(":")[1]))
                     if message.payload == "EXIT":
                         self.messages_queue.put("EXIT")
