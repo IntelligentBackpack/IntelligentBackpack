@@ -6,7 +6,6 @@ class RemoteRepositoryImpl:
     Class that represents the remote repository, performing the requests to send to the remote
     database
     """
-    #TODO usare il valueobject User
     def __init__(self, service_url, request_queue, hash):
         """
         Constructor method that create the object of this module
@@ -58,7 +57,7 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         """
-        if user is "":
+        if user is None:
             return
         user = user.replace(".", "-")
         new_request = {

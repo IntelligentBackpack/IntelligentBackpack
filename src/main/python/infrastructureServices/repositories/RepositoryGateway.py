@@ -35,18 +35,18 @@ class RepositoryGatewayImpl(Repository):
         """
         self.user = user_name
 
-    def set_remote(self, url, queue):
+    def set_remote(self, url, queue, hash):
         """
         Method that set the remote repository
             Parameters:
                 url (string): The url of the remote database where to send the queries
                 queue (queue): The queue to use to send the remote requests
+                hash (string): The hash that identifies the record on the remote database
 
             Returns:
                 void
         """
-        # TODO gestire hash
-        self.remote_repo = RemoteRepositoryImpl(url, queue, "hash")
+        self.remote_repo = RemoteRepositoryImpl(url, queue, hash)
 
     def sync_remote(self):
         """
