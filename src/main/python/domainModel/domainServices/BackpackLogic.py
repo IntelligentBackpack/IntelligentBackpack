@@ -31,7 +31,6 @@ class BackpackLogicService:
         """
         book = Book(isbn=isbn, tagId=tag)
         if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
-            print("AGGIUNGO")
             self.add_element_into_backpack(tag)
         else:
             self.remove_element_into_backpack(tag)
@@ -61,16 +60,20 @@ class BackpackLogicService:
         element = self.repository.find_element_into_repository(value)
         return element
 
-    def check_element_missed(self):
-        # TODO
-        return
-
     def get_username(self):
         """
         Getter method that returns the username of the owner
         :return: the user email or name
         """
         return self.backpack.user_email
+
+    def set_id(self, id):
+        """
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        """
+        self.backpack.set_id(id)
 
     def register(self, user):
         """
@@ -87,3 +90,4 @@ class BackpackLogicService:
         :return: none
         """
         self.backpack.set_user("")
+        self.repository.set_user(None)

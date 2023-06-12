@@ -1,4 +1,5 @@
 from ..valueObjects.Book import Book
+from ..valueObjects.User import User
 
 
 class Backpack:
@@ -10,7 +11,8 @@ class Backpack:
         """
         Constructor method that creates the backpack
         """
-        self.user_email = ""
+        self.id = ""
+        self.user = User()
         self.books_lastly_added = []
 
     def set_user(self, email):
@@ -19,7 +21,22 @@ class Backpack:
         :param email: email of the owner
         :return: void
         """
-        self.user_email = email
+        self.user.email = email
+        return
+
+    def get_user(self):
+        """
+        Method that return the user email of the owner
+        """
+        return self.user.email
+
+    def set_id(self, id):
+        """
+        Method that set the user email of the owner
+        :param id: id of the backpack
+        :return: void
+        """
+        self.id = id
         return
 
     def add_book(self, book: Book):
