@@ -57,6 +57,23 @@ def get_call(url):
         print("Error")
         print(e)
 
+def put_call(url, payload):
+    """
+    Method that performs HTTP PUT call requests to the url and with the payload received in input
+    Parameters:
+            url (string): The url to send the request
+            payload (string): The payload to send inside the request
+
+        Returns:
+            void
+    """
+    try:
+        headers = {'content-type': 'application/json'}
+        response = requests.put(url, payload, headers=headers)
+        return response
+    except Exception as e:
+        print("Error")
+        print(e)
 
 def execute_calls(type, url, payload):
     """
@@ -78,6 +95,8 @@ def execute_calls(type, url, payload):
                 requests.patch(url, json.dumps(payload), headers=headers)
             elif type == "DELETE":
                 requests.delete(url, headers=headers)
+            elif type == "PUT":
+                requests.put(url, {},headers=headers)
             terminated = True
             time.sleep(5)
         except Exception as e:
