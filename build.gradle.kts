@@ -65,7 +65,7 @@ tasks.register<Exec>("createVirtualEnv") {
     val file = File(directoryPath)
     doLast {
         if (!file.isDirectory) {
-            commandLine("python -m venv ./.gradle/python")
+            commandLine("python -m venv ./.gradle/python".split(" "))
         }
     }
 }
