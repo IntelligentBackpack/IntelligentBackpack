@@ -60,8 +60,19 @@ pytest {
     virtualEnvFolder.set(".gradle/python")
 }
 
+tasks.register<Exec>("createVirtualEnv") {
+    val directoryPath = "$projectDir/.gradle/python"
+    val file = File(directoryPath)
+    doLast {
+        if (!file.isDirectory) {
+            commandLine("python -m venv ./.gradle/python")
+        }
+    }
+}
+
 tasks.named("test") {
-    dependsOn("performTests")
+    dependsOn("createVirtualEnv")
+    finalizedBy("performTests")
 }
 
 gitSemVer {
