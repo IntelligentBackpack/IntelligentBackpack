@@ -60,6 +60,7 @@ pytest {
 }
 
 tasks.named("test") {
+    dependsOn("pipInstall")
     dependsOn("performTests")
 }
 
