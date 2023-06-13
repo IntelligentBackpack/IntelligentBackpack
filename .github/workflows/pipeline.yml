@@ -32,6 +32,8 @@ jobs:
         run: pip install coverage
       - name: Install TinyDB
         run: pip install tinydb
+      - name: Install Requests
+        run: pip install requests
       - name: Build the project
         run: ./gradlew build
       - name: Build with Gradle
