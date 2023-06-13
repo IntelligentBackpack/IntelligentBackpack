@@ -56,23 +56,11 @@ python {
 pytest {
     testSrc.set("src/test")
     minCoveragePercValue.set(50)
-    useVirtualEnv.set(true)
-    virtualEnvFolder.set(".gradle/python")
-}
-
-tasks.register<Exec>("createVirtualEnv") {
-    val directoryPath = "$projectDir/.gradle/python"
-    val file = File(directoryPath)
-    doLast {
-        if (!file.isDirectory) {
-            commandLine("python3 -m venv ./.gradle/python".split(" ").toList())
-        }
-    }
+    useVirtualEnv.set(false)
 }
 
 tasks.named("test") {
-    dependsOn("createVirtualEnv")
-    finalizedBy("performTests")
+    dependsOn("performTests")
 }
 
 gitSemVer {
