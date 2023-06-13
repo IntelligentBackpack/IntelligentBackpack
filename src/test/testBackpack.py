@@ -10,7 +10,7 @@ class TestBackpack(unittest.TestCase):
     def test_set_user(self):
         email = "daniele.dilillo@email.com"
         self.backpack.set_user("daniele.dilillo@email.com")
-        value = self.backpack.user_email
+        value = self.backpack.user.email
         self.assertEqual(value, email)
 
     def test_add_book(self):
