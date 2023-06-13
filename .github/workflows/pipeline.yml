@@ -30,6 +30,8 @@ jobs:
         run: chmod +x gradlew
       - name: Install coverage
         run: pip install coverage
+      - name: Install TinyDB
+        run: pip install tinydb
       - name: Build the project
         run: ./gradlew build
       - name: Build with Gradle
