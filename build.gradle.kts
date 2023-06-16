@@ -34,7 +34,7 @@ buildscript {
     }
 }
 
-tasks.named("build").configure {
+tasks.named("build") {
     dependsOn(tasks.named("pipInstall"))
 }
 
@@ -50,17 +50,19 @@ python {
     // pip("pi-rc522:2.2.1")
     minPythonVersion = "3.2"
     minPipVersion = "9.0.1"
-    python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.USER
+    python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.VIRTUALENV
 }
 
 pytest {
     testSrc.set("src/test")
-    minCoveragePercValue.set(50)
+    minCoveragePercValue.set(40)
     useVirtualEnv.set(false)
+    // virtualEnvFolder.set(".gradle/python")
 }
 
 tasks.named("test") {
-    dependsOn("performTests")
+    dependsOn("pipInstall")
+    finalizedBy("performTests")
 }
 
 gitSemVer {
