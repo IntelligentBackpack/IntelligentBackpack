@@ -1,6 +1,7 @@
 from .accessData.LocalRepository import LocalRepositoryImpl
 from .accessData.RemoteRepository import RemoteRepositoryImpl
 from ...domainModel.dataAccess.RepositoryAbstractClass import RepositoryAB
+from ...application.preferences.preferences_utils import write_username
 Repository = RepositoryAB
 
 
@@ -34,6 +35,7 @@ class RepositoryGatewayImpl(Repository):
                 void
         """
         self.user = user_name
+        write_username(user_name)
 
     def set_remote(self, url, queue, hash):
         """

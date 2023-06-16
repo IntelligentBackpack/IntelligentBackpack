@@ -39,7 +39,7 @@ class RemoteRepositoryImpl:
             "type": "PATCH",
             "url": self.service_url + "/" + user + "/" + self.hash + ".json",
             "payload": {
-                str(value): "true"
+                str(value): True
             }
         }
         self.request_queue.put(new_request)
