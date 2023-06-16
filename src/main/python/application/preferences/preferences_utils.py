@@ -5,7 +5,8 @@ import json
 def create_config_file(path):
     obj = {
         "deviceId": "",
-        "primaryKey": ""
+        "primaryKey": "",
+        "userName": ""
     }
     if os.path.isfile(path) is not True:
         with open(path, 'x') as json_file:
