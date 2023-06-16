@@ -21,6 +21,7 @@ def initial_setup():
 
     device_name = preferences_utils.get_device_id(CONFIG_FILE_PATH)
     primary_key = preferences_utils.get_device_key(CONFIG_FILE_PATH)
+    username = preferences_utils.get_username(CONFIG_FILE_PATH)
     if device_name is None:
         raise ValueError('Device config file not found!')
     if primary_key is None:
@@ -36,7 +37,8 @@ def initial_setup():
             json_response = response.json()
             primary_key = json_response["authentication"]["symmetricKey"]["primaryKey"]
             preferences_utils.write_device_key(CONFIG_FILE_PATH, primary_key)
-    return device_name, primary_key
+
+    return device_name, primary_key, username
 
 class ServiceLocator:
     """
@@ -55,7 +57,7 @@ class ServiceLocator:
         """
         self.sync_objects = SyncUtils()
 
-        device_name, key = initial_setup()
+        device_name, key, self.username = initial_setup()
 
         hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages, device_name, key)
         rfid_thread = RFIDModule.RFIDReader(self.sync_objects.queue_messages)
@@ -73,6 +75,15 @@ class ServiceLocator:
         :return: the repository gateway
         """
         return self.repository
+
+    def get_username(self):
+        """
+        Getter method for the username registered
+        :return: the username registered
+        """
+        if self.username is None:
+            return ""
+        return self.username
 
     def get_queue(self):
         """
