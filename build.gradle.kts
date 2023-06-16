@@ -50,7 +50,7 @@ python {
     // pip("pi-rc522:2.2.1")
     minPythonVersion = "3.2"
     minPipVersion = "9.0.1"
-    python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.VIRTUALENV
+    python.scope = ru.vyarus.gradle.plugin.python.PythonExtension.Scope.USER
 }
 
 pytest {
