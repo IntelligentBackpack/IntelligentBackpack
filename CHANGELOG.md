@@ -1,3 +1,15 @@
+## [1.0.1](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.0...1.0.1) (2023-06-16)
+
+
+### Bug Fixes
+
+* added startup registration of the username ([650d6ba](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/650d6ba60c2e4efae110dd95e21a6e89bc828eb0))
+
+
+### General maintenance
+
+* merge resolution ([b278460](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/b27846089830effee502a6234df123ef1225b083))
+
 ## 1.0.0 (2023-06-16)
 
 
