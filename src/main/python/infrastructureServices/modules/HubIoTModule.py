@@ -77,21 +77,22 @@ class HubIotThread (Thread):
                     if message.payload == "EXIT":
                         self.messages_queue.put("EXIT")
                         raise Exception('Stop this thing')
-                    if "REGISTER" in message.payload:
-                        message_to_send = {
-                            "type": "REGISTER",
-                            "payload": {
-                                "email": message.payload.split(";")[1],
-                                "hash": message.payload.split(";")[2]
-                            }
-                        }
-                        self.messages_queue.put(message_to_send)
                     if "UNREGISTER" in message.payload:
                         message_to_send = {
                             "type": "UNREGISTER",
                             "payload": ""
                         }
                         self.messages_queue.put(message_to_send)
+                    else:
+                        if "REGISTER" in message.payload:
+                            message_to_send = {
+                                "type": "REGISTER",
+                                "payload": {
+                                    "email": message.payload.split(";")[1],
+                                    "hash": message.payload.split(";")[2]
+                                }
+                            }
+                            self.messages_queue.put(message_to_send)
                     # test
                     if "NEW_DATA" in message.payload:
                         message_to_send = {
