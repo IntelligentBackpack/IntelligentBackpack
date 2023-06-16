@@ -2,6 +2,7 @@ from .accessData.LocalRepository import LocalRepositoryImpl
 from .accessData.RemoteRepository import RemoteRepositoryImpl
 from ...domainModel.dataAccess.RepositoryAbstractClass import RepositoryAB
 from ...application.preferences.preferences_utils import write_username
+from ...application.serviceLocator.backpack_service_locator import CONFIG_FILE_PATH
 Repository = RepositoryAB
 
 
@@ -35,7 +36,7 @@ class RepositoryGatewayImpl(Repository):
                 void
         """
         self.user = user_name
-        write_username(user_name)
+        write_username(CONFIG_FILE_PATH, user_name)
 
     def set_remote(self, url, queue, hash):
         """
