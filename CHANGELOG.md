@@ -1,3 +1,21 @@
+## [1.0.2](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.1...1.0.2) (2023-06-16)
+
+
+### Bug Fixes
+
+* fixed write_username arguments ([f667fd6](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/f667fd6c3a0450f58182bc27d26ba11d2be8d28b))
+
+
+### General maintenance
+
+* added path to write_username ([115960a](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/115960a18b7d1eaea8dccd1fecb72984c378094c))
+* changed local registration of the user ([b968628](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/b968628d75c28e8ac2abf31d3c36364227a47f78))
+
+
+### Build and continuous integration
+
+* changed python execution scope ([2da9c25](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/2da9c2568de28e81a662e4de470c4779c03cd385))
+
 ## [1.0.1](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.0...1.0.1) (2023-06-16)
 
 
