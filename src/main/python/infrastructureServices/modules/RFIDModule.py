@@ -35,7 +35,6 @@ class RFIDReader(Thread):
                 hex_value = str(hex(id))[2:10].upper()
                 value_to_send = ":".join([hex_value[i:i+2] for i in range(0, len(hex_value), 2)])
 
-                # execute the high order function
                 message_to_send = {
                     "type": "TAG_READ",
                     "payload": value_to_send

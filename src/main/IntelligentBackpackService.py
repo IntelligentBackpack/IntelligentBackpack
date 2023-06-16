@@ -16,7 +16,7 @@ if __name__ == "__main__":
         for module in serviceLocator.get_modules():
             module.start()
 
-        while(True):
+        while True:
             request = queue_messages.get()
             if request == "EXIT":
                 raise KeyboardInterrupt()
@@ -27,11 +27,10 @@ if __name__ == "__main__":
                     write_username(CONFIG_FILE_PATH, name)
                     domainLogic.register(name)
                 if request["type"] == "UNREGISTER":
+                    write_username(CONFIG_FILE_PATH, "")
                     domainLogic.unregister()
                 if request["type"] == "TAG_READ":
                     domainLogic.manage_element("", request["payload"])
 
     except KeyboardInterrupt:
-        # Exit application because user indicated they wish to exit.
-        # This will have cancelled `main()` implicitly.
         print("EXIT")

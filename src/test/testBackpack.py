@@ -2,6 +2,7 @@ import unittest
 from ..main.python.domainModel.valueObjects.Book import Book
 from ..main.python.domainModel.entities.Backpack import Backpack
 
+
 class TestBackpack(unittest.TestCase):
 
     def setUp(self):

@@ -3,18 +3,21 @@ import requests
 import time
 from threading import Thread
 import json
+
+
 """
 Module that manage and send all the HTTP pending requests until the connection is available
 """
 
+
 class NetworkThread (Thread):
+
     """
     Network thread that manages all the HTTP requests to be performed, using a synchronized queue
     to receive the requests to send and wait for.
     If the connection is not set or working, the requests are tried until the connection is on
     and the device ready to sent them
     """
-
 
     def __init__(self, name, queue):
         """
@@ -35,7 +38,7 @@ class NetworkThread (Thread):
         Method that executes the thread
         """
         print("Thread '" + self.name + "' avviato")
-        while (True):
+        while True:
             request = self.queue.get()
             element = json.loads(json.dumps(request))
             execute_calls(element["type"], element["url"], element["payload"])
@@ -57,6 +60,7 @@ def get_call(url):
         print("Error")
         print(e)
 
+
 def put_call(url, payload):
     """
     Method that performs HTTP PUT call requests to the url and with the payload received in input
@@ -75,6 +79,7 @@ def put_call(url, payload):
         print("Error")
         print(e)
 
+
 def execute_calls(type, url, payload):
     """
     Method that performs HTTP PATH or DELETE requests to the url and with the payload received in input
@@ -88,7 +93,7 @@ def execute_calls(type, url, payload):
     """
 
     terminated = False
-    while not (terminated):
+    while not terminated:
         try:
             headers = {'content-type': 'application/json'}
             if type == "PATCH":
@@ -96,7 +101,7 @@ def execute_calls(type, url, payload):
             elif type == "DELETE":
                 requests.delete(url, headers=headers)
             elif type == "PUT":
-                requests.put(url, {},headers=headers)
+                requests.put(url, {}, headers=headers)
             terminated = True
             time.sleep(5)
         except Exception as e:

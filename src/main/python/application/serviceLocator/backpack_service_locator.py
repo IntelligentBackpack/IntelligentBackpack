@@ -9,12 +9,14 @@ from python.infrastructureServices.modules.RestModule import put_call
 
 CONFIG_FILE_PATH = "./resources/device_config.json"
 
+
 def get_remote_db_url():
     """
     Methods that returns the string url of the remote database
     :return: the string url of the remote database
     """
     return "https://intelligentbackpack-d463a-default-rtdb.europe-west1.firebasedatabase.app"
+
 
 def initial_setup():
     preferences_utils.create_config_file(CONFIG_FILE_PATH)
@@ -29,7 +31,9 @@ def initial_setup():
     if primary_key == "":
         register_request = {
             "url": "https://managebackpackservice.azurewebsites.net/addDevice/raspTest1",
-            "payload": { }
+            "payload": {
+
+            }
         }
         response = put_call(register_request["url"], register_request["payload"])
 
@@ -39,6 +43,7 @@ def initial_setup():
             preferences_utils.write_device_key(CONFIG_FILE_PATH, primary_key)
 
     return device_name, primary_key, username
+
 
 class ServiceLocator:
     """

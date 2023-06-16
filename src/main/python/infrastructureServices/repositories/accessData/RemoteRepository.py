@@ -31,7 +31,7 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         """
-        if user is "":
+        if user == "":
             return
         print("AGGIUNGO ELEMENTO DA INVIARE")
         user = user.replace(".", "-")
@@ -43,9 +43,6 @@ class RemoteRepositoryImpl:
             }
         }
         self.request_queue.put(new_request)
-        # req = self.request_queue.get()
-        # element = json.loads(json.dumps(req))
-        # execute_calls(element["type"], element["url"], element["payload"])
 
     def remove_element(self, user, value):
         """
@@ -57,7 +54,7 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         """
-        if user is None:
+        if user == "":
             return
         user = user.replace(".", "-")
         new_request = {
@@ -66,9 +63,6 @@ class RemoteRepositoryImpl:
             "payload": {}
         }
         self.request_queue.put(new_request)
-        # req = self.request_queue.get()
-        # element = json.loads(json.dumps(req))
-        # execute_calls(element["type"], element["url"], element["payload"])
         return
 
     def find_element(self, user, value):
@@ -81,7 +75,7 @@ class RemoteRepositoryImpl:
             Returns:
                 result (boolean): return true if the element is present, false otherwise
         """
-        if user is "":
+        if user == "":
             return
         user = user.replace(".", "-")
         response = get_call(self.service_url + "/" + user + "/" + self.hash + "/" + str(value) + ".json")

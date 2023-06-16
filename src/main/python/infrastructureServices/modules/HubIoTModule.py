@@ -43,12 +43,9 @@ class HubIotThread (Thread):
         try:
             asyncio.run(self.main())
         except KeyboardInterrupt or Exception:
-            # Exit application because user indicated they wish to exit.
-            # This will have cancelled `main()` implicitly.
             print("User initiated exit. Exiting")
         finally:
             print("Received {} messages in total".format(TOTAL_MESSAGES_RECEIVED))
-
 
     async def main(self):
         """
@@ -73,7 +70,6 @@ class HubIotThread (Thread):
                     time_stamp = calendar.timegm(current_GMT)
                     print("Message received with payload: {}".format(message.payload))
                     print("TIMESTAMP: {}".format(time_stamp))
-                    # print("Email is {}".format(message.payload.split(":")[1]))
                     if message.payload == "EXIT":
                         self.messages_queue.put("EXIT")
                         raise Exception('Stop this thing')
@@ -102,14 +98,11 @@ class HubIotThread (Thread):
                         self.messages_queue.put(message_to_send)
 
 
-
 if __name__ == "__main__":
     try:
         hub = HubIotThread(queue.Queue())
         asyncio.run(hub.main())
     except KeyboardInterrupt:
-        # Exit application because user indicated they wish to exit.
-        # This will have cancelled `main()` implicitly.
         print("User initiated exit. Exiting")
     finally:
         print("Received {} messages in total".format(TOTAL_MESSAGES_RECEIVED))
