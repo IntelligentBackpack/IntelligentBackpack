@@ -51,7 +51,7 @@ class RemoteRepositoryImpl:
         user = user.replace(".", "-")
         new_request = {
             "type": "DELETE",
-            "url": self.service_url + "/" + user + ".json",
+            "url": self.service_url + "/" + user + "/" + self.hash +  ".json",
             "payload": {
 
             }
