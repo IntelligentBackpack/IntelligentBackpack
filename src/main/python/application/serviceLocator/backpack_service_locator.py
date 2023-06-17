@@ -4,6 +4,7 @@ from ..dependencyInjection.get_sync_utils import SyncUtils
 from ...infrastructureServices.repositories.RepositoryGateway import RepositoryGatewayImpl
 from python.application.preferences import preferences_utils
 from python.infrastructureServices.modules.RestModule import put_call
+import sys
 try:
     from ...infrastructureServices.modules import RFIDModule
 except ImportError:
@@ -78,6 +79,7 @@ class ServiceLocator:
 
         self.repository = RepositoryGatewayImpl("db")
         self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests, device_name)
+        self.repository.sync_remote()
 
         self.modules = [hub_thread, network_thread, rfid_thread]
 

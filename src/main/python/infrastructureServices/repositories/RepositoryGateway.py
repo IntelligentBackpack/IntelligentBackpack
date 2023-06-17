@@ -57,7 +57,7 @@ class RepositoryGatewayImpl(Repository):
             Returns:
                 void
         """
-        if self.remote_repo is not None:
+        if self.remote_repo is not None and self.user != "":
             tags_to_sync = self.local_repo.get_all_tags()
             for tag in tags_to_sync:
                 self.remote_repo.add_element(self.user, tag)
