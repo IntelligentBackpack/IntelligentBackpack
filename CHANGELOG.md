@@ -1,3 +1,15 @@
+## [1.0.8](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.7...1.0.8) (2023-06-17)
+
+
+### Bug Fixes
+
+* fixed preferences update removing append in order to overwrite ([a8c3b17](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/a8c3b17647fd2e66c0601967770dc256d9e9832b))
+
+
+### General maintenance
+
+* removed unused scripts and cleared code ([33518f7](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/33518f73ce90711689a6c25a273b4f7320968af6))
+
 ## [1.0.7](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.6...1.0.7) (2023-06-17)
 
 
