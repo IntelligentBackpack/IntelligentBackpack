@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>python.domainModel.domainServices.BackpackLogic API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>python.domainModel.domainServices.BackpackLogic</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># use the policies to add/remove elements into the Backpack retrieved and update db (use cases)
+from ..dataAccess.RepositoryAbstractClass import RepositoryAB
+from ..policies.InsertNewObjectPolicy import CanInsertNewObject
+from ..valueObjects.Book import Book
+from ..entities.Backpack import Backpack
+
+
+class BackpackLogicService:
+    &#34;&#34;&#34;
+    Domain logic service that models the operations that can be performed to the
+    backpack
+    &#34;&#34;&#34;
+
+    def __init__(self, repository: RepositoryAB):
+        &#34;&#34;&#34;
+        Constructor method that initialize the backpack
+        :param repository: the repository to use
+        &#34;&#34;&#34;
+        if isinstance(repository, RepositoryAB):
+            # TODO exception
+            pass
+        self.repository = repository
+        self.backpack = Backpack()
+
+    def manage_element(self, isbn, tag):
+        &#34;&#34;&#34;
+        Entry method that manage a new book that the backpack did read
+        :param isbn: isbn value of the book
+        :param tag: tag value of the book/object
+        :return: void
+        &#34;&#34;&#34;
+        book = Book(isbn=isbn, tagId=tag)
+        if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
+            self.add_element_into_backpack(tag)
+        else:
+            self.remove_element_into_backpack(tag)
+
+    def add_element_into_backpack(self, value: Book):
+        &#34;&#34;&#34;
+        Method that add a new element into the backpack
+        :param value: the value to be added
+        :return: void
+        &#34;&#34;&#34;
+        self.repository.add_element_into_repository(value)
+
+    def remove_element_into_backpack(self, value):
+        &#34;&#34;&#34;
+        Method that remove an existing element from the backpack
+        :param value: the value to be added
+        :return: void
+        &#34;&#34;&#34;
+        self.repository.remove_element_into_repository(value)
+
+    def find_element_into_backpack(self, value):
+        &#34;&#34;&#34;
+        Method that finds an existing element from the backpack
+        :param value: the value to be found
+        :return: void
+        &#34;&#34;&#34;
+        element = self.repository.find_element_into_repository(value)
+        return element
+
+    def get_username(self):
+        &#34;&#34;&#34;
+        Getter method that returns the username of the owner
+        :return: the user email or name
+        &#34;&#34;&#34;
+        return self.backpack.user_email
+
+    def set_id(self, id):
+        &#34;&#34;&#34;
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_id(id)
+
+    def register(self, user):
+        &#34;&#34;&#34;
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_user(user)
+        self.repository.set_user(user)
+
+    def unregister(self):
+        &#34;&#34;&#34;
+        Method that unregister the user
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_user(&#34;&#34;)
+        self.repository.set_user(None)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService"><code class="flex name class">
+<span>class <span class="ident">BackpackLogicService</span></span>
+<span>(</span><span>repository: <a title="python.domainModel.dataAccess.RepositoryAbstractClass.RepositoryAB" href="../dataAccess/RepositoryAbstractClass.html#python.domainModel.dataAccess.RepositoryAbstractClass.RepositoryAB">RepositoryAB</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Domain logic service that models the operations that can be performed to the
+backpack</p>
+<p>Constructor method that initialize the backpack
+:param repository: the repository to use</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BackpackLogicService:
+    &#34;&#34;&#34;
+    Domain logic service that models the operations that can be performed to the
+    backpack
+    &#34;&#34;&#34;
+
+    def __init__(self, repository: RepositoryAB):
+        &#34;&#34;&#34;
+        Constructor method that initialize the backpack
+        :param repository: the repository to use
+        &#34;&#34;&#34;
+        if isinstance(repository, RepositoryAB):
+            # TODO exception
+            pass
+        self.repository = repository
+        self.backpack = Backpack()
+
+    def manage_element(self, isbn, tag):
+        &#34;&#34;&#34;
+        Entry method that manage a new book that the backpack did read
+        :param isbn: isbn value of the book
+        :param tag: tag value of the book/object
+        :return: void
+        &#34;&#34;&#34;
+        book = Book(isbn=isbn, tagId=tag)
+        if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
+            self.add_element_into_backpack(tag)
+        else:
+            self.remove_element_into_backpack(tag)
+
+    def add_element_into_backpack(self, value: Book):
+        &#34;&#34;&#34;
+        Method that add a new element into the backpack
+        :param value: the value to be added
+        :return: void
+        &#34;&#34;&#34;
+        self.repository.add_element_into_repository(value)
+
+    def remove_element_into_backpack(self, value):
+        &#34;&#34;&#34;
+        Method that remove an existing element from the backpack
+        :param value: the value to be added
+        :return: void
+        &#34;&#34;&#34;
+        self.repository.remove_element_into_repository(value)
+
+    def find_element_into_backpack(self, value):
+        &#34;&#34;&#34;
+        Method that finds an existing element from the backpack
+        :param value: the value to be found
+        :return: void
+        &#34;&#34;&#34;
+        element = self.repository.find_element_into_repository(value)
+        return element
+
+    def get_username(self):
+        &#34;&#34;&#34;
+        Getter method that returns the username of the owner
+        :return: the user email or name
+        &#34;&#34;&#34;
+        return self.backpack.user_email
+
+    def set_id(self, id):
+        &#34;&#34;&#34;
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_id(id)
+
+    def register(self, user):
+        &#34;&#34;&#34;
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_user(user)
+        self.repository.set_user(user)
+
+    def unregister(self):
+        &#34;&#34;&#34;
+        Method that unregister the user
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_user(&#34;&#34;)
+        self.repository.set_user(None)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.add_element_into_backpack"><code class="name flex">
+<span>def <span class="ident">add_element_into_backpack</span></span>(<span>self, value: <a title="python.domainModel.valueObjects.Book.Book" href="../valueObjects/Book.html#python.domainModel.valueObjects.Book.Book">Book</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that add a new element into the backpack
+:param value: the value to be added
+:return: void</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_element_into_backpack(self, value: Book):
+    &#34;&#34;&#34;
+    Method that add a new element into the backpack
+    :param value: the value to be added
+    :return: void
+    &#34;&#34;&#34;
+    self.repository.add_element_into_repository(value)</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.find_element_into_backpack"><code class="name flex">
+<span>def <span class="ident">find_element_into_backpack</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that finds an existing element from the backpack
+:param value: the value to be found
+:return: void</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_element_into_backpack(self, value):
+    &#34;&#34;&#34;
+    Method that finds an existing element from the backpack
+    :param value: the value to be found
+    :return: void
+    &#34;&#34;&#34;
+    element = self.repository.find_element_into_repository(value)
+    return element</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.get_username"><code class="name flex">
+<span>def <span class="ident">get_username</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Getter method that returns the username of the owner
+:return: the user email or name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_username(self):
+    &#34;&#34;&#34;
+    Getter method that returns the username of the owner
+    :return: the user email or name
+    &#34;&#34;&#34;
+    return self.backpack.user_email</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.manage_element"><code class="name flex">
+<span>def <span class="ident">manage_element</span></span>(<span>self, isbn, tag)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Entry method that manage a new book that the backpack did read
+:param isbn: isbn value of the book
+:param tag: tag value of the book/object
+:return: void</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def manage_element(self, isbn, tag):
+    &#34;&#34;&#34;
+    Entry method that manage a new book that the backpack did read
+    :param isbn: isbn value of the book
+    :param tag: tag value of the book/object
+    :return: void
+    &#34;&#34;&#34;
+    book = Book(isbn=isbn, tagId=tag)
+    if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
+        self.add_element_into_backpack(tag)
+    else:
+        self.remove_element_into_backpack(tag)</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.register"><code class="name flex">
+<span>def <span class="ident">register</span></span>(<span>self, user)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that register the user owner
+:param user: the username string
+:return: none</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register(self, user):
+    &#34;&#34;&#34;
+    Method that register the user owner
+    :param user: the username string
+    :return: none
+    &#34;&#34;&#34;
+    self.backpack.set_user(user)
+    self.repository.set_user(user)</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.remove_element_into_backpack"><code class="name flex">
+<span>def <span class="ident">remove_element_into_backpack</span></span>(<span>self, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that remove an existing element from the backpack
+:param value: the value to be added
+:return: void</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_element_into_backpack(self, value):
+    &#34;&#34;&#34;
+    Method that remove an existing element from the backpack
+    :param value: the value to be added
+    :return: void
+    &#34;&#34;&#34;
+    self.repository.remove_element_into_repository(value)</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.set_id"><code class="name flex">
+<span>def <span class="ident">set_id</span></span>(<span>self, id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that register the user owner
+:param user: the username string
+:return: none</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_id(self, id):
+    &#34;&#34;&#34;
+    Method that register the user owner
+    :param user: the username string
+    :return: none
+    &#34;&#34;&#34;
+    self.backpack.set_id(id)</code></pre>
+</details>
+</dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.unregister"><code class="name flex">
+<span>def <span class="ident">unregister</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that unregister the user
+:return: none</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unregister(self):
+    &#34;&#34;&#34;
+    Method that unregister the user
+    :return: none
+    &#34;&#34;&#34;
+    self.backpack.set_user(&#34;&#34;)
+    self.repository.set_user(None)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="python.domainModel.domainServices" href="index.html">python.domainModel.domainServices</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService">BackpackLogicService</a></code></h4>
+<ul class="">
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.add_element_into_backpack" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.add_element_into_backpack">add_element_into_backpack</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.find_element_into_backpack" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.find_element_into_backpack">find_element_into_backpack</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.get_username" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.get_username">get_username</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.manage_element" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.manage_element">manage_element</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.register" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.register">register</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.remove_element_into_backpack" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.remove_element_into_backpack">remove_element_into_backpack</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.set_id" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.set_id">set_id</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.unregister" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.unregister">unregister</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
