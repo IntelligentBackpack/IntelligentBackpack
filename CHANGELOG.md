@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.6...1.0.7) (2023-06-17)
+
+
+### Bug Fixes
+
+* fixed delete url to clear remote database ([938aff5](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/938aff587ca4a729831516bb38dc3312796aaedd))
+
 ## [1.0.6](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.5...1.0.6) (2023-06-17)
 
 
