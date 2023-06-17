@@ -1,3 +1,21 @@
+## [1.0.3](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.2...1.0.3) (2023-06-17)
+
+
+### Bug Fixes
+
+* changed imports ([9dfe619](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/9dfe6197f1f5b5fa43aefe784687049c986e0f56))
+
+
+### General maintenance
+
+* code quality improved and removed unused scripts ([0774c48](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/0774c48319d5a6f92ab6184dddbd900c86d0ef21))
+
+
+### Documentation
+
+* added new documentation ([17faa3f](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/17faa3f5609ba299ad88ce7bbfdc5962d4f0aade))
+* updated documentation for GitHub Pages ([79909bd](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/79909bd02096cb599f95b0ea78f2409470cc898d))
+
 ## [1.0.2](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.1...1.0.2) (2023-06-16)
 
 
