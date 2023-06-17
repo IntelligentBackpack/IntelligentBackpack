@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.3...1.0.4) (2023-06-17)
+
+
+### Bug Fixes
+
+* fixed remote db sync and minor things ([7f831aa](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/7f831aa564291cc459de35c10c09729d5d4a60b4))
+
 ## [1.0.3](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.2...1.0.3) (2023-06-17)
 
 
