@@ -79,7 +79,6 @@ class ServiceLocator:
 
         self.repository = RepositoryGatewayImpl("db")
         self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests, device_name)
-        self.repository.sync_remote()
 
         self.modules = [hub_thread, network_thread, rfid_thread]
 

@@ -10,6 +10,7 @@ if __name__ == "__main__":
     queue_messages = serviceLocator.get_messages_queue()
     domainLogic = BackpackLogicService(serviceLocator.repository)
     domainLogic.register(serviceLocator.get_username())
+    serviceLocator.repository.sync_remote()
 
     try:
 

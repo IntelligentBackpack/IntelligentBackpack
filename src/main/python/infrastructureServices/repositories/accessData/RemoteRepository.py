@@ -44,6 +44,20 @@ class RemoteRepositoryImpl:
         }
         self.request_queue.put(new_request)
 
+    def clear(self, user):
+        if user == "":
+            return
+        print("CLEAR")
+        user = user.replace(".", "-")
+        new_request = {
+            "type": "DELETE",
+            "url": self.service_url + "/" + user + ".json",
+            "payload": {
+                str(value): True
+            }
+        }
+        self.request_queue.put(new_request)
+
     def remove_element(self, user, value):
         """
         Method that remove an element from the remote database
