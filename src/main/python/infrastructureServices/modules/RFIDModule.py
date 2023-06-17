@@ -1,8 +1,10 @@
 from time import sleep
-from mfrc522 import SimpleMFRC522
-import RPi.GPIO as GPIO
 from threading import Thread
-
+try:
+    from mfrc522 import SimpleMFRC522
+    import RPi.GPIO as GPIO
+except ImportError:
+    pass
 
 class RFIDReader(Thread):
     """

@@ -1,10 +1,13 @@
 # contains all threads to start as static array of singletons
 from ...infrastructureServices.modules import RestModule, HubIoTModule
-from ...infrastructureServices.modules import RFIDModule
 from ..dependencyInjection.get_sync_utils import SyncUtils
 from ...infrastructureServices.repositories.RepositoryGateway import RepositoryGatewayImpl
 from python.application.preferences import preferences_utils
 from python.infrastructureServices.modules.RestModule import put_call
+try:
+    from ...infrastructureServices.modules import RFIDModule
+except ImportError:
+    pass
 
 
 CONFIG_FILE_PATH = "./resources/device_config.json"
@@ -65,7 +68,11 @@ class ServiceLocator:
         device_name, key, self.username = initial_setup()
 
         hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages, device_name, key)
-        rfid_thread = RFIDModule.RFIDReader(self.sync_objects.queue_messages)
+        modulename = 'RFIDModule'
+        if modulename not in sys.modules:
+            rfid_thread = RFIDModule.RFIDReader(self.sync_objects.queue_messages)
+        else:
+            rfid_thread = None
         network_thread = RestModule.NetworkThread("Thread#Network", self.sync_objects.queue_requests)
         network_thread.setDaemon(True)
 
