@@ -1,3 +1,10 @@
+## [1.0.9](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.8...1.0.9) (2023-06-17)
+
+
+### Bug Fixes
+
+* changed to read but with seek to 0 position to overwrite ([191ea4a](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/191ea4aa3b669c5cb13e2cb7bafcd0a647396b84))
+
 ## [1.0.8](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.7...1.0.8) (2023-06-17)
 
 
