@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.9...1.0.10) (2023-06-17)
+
+
+### Bug Fixes
+
+* removed seek(0) that causes bugs ([59f6996](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/59f6996cae61674a24d87029703e28482a9da2b3))
+
 ## [1.0.9](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.8...1.0.9) (2023-06-17)
 
 
