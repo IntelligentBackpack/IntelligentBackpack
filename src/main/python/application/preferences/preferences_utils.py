@@ -44,22 +44,26 @@ def write_device_id(path, obj):
 
 def write_device_key(path, key):
     if os.path.isfile(path):
+        json_obj = {}
         with open(path, 'r+') as json_file:
             json_obj = json.load(json_file)
             json_obj['primaryKey'] = key
-            json_string = json.dumps(json_obj)
-            json_file.seek(0)
-            json_file.write(json_string)
+        write_file(path, json_obj)
 
 
 def write_username(path, name):
     if os.path.isfile(path):
+        json_obj = {}
         with open(path, 'r+') as json_file:
             json_obj = json.load(json_file)
             json_obj['userName'] = name
-            json_string = json.dumps(json_obj)
-            json_file.seek(0)
-            json_file.write(json_string)
+        write_file(path, json_obj)
+
+
+def write_file(path, json_obj):
+    with open(path, 'w') as json_file:
+        json_string = json.dumps(json_obj)
+        json_file.write(json_string)
 
 
 def get_username(path):
@@ -73,6 +77,7 @@ def get_username(path):
 
 if __name__ == "__main__":
 
-    device_name = get_device_id()
+    path = "../../../resources/device_config.json"
 
-    print(device_name)
+    write_username(path, "")
+
