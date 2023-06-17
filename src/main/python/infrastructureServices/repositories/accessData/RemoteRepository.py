@@ -53,7 +53,7 @@ class RemoteRepositoryImpl:
             "type": "DELETE",
             "url": self.service_url + "/" + user + ".json",
             "payload": {
-                str(value): True
+
             }
         }
         self.request_queue.put(new_request)
