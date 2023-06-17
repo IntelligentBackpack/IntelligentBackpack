@@ -27,10 +27,12 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from time import sleep
-# from mfrc522 import SimpleMFRC522
-# import GPIO
 from threading import Thread
-
+try:
+    from mfrc522 import SimpleMFRC522
+    import RPi.GPIO as GPIO
+except ImportError:
+    pass
 
 class RFIDReader(Thread):
     &#34;&#34;&#34;
@@ -60,17 +62,20 @@ class RFIDReader(Thread):
                 print(&#34;Hold a tag near the reader&#34;)
                 id, text = self.reader.read()
                 print(&#34;ID: %s\nText: %s&#34; % (id, text))
-                # execute the high order function
+                hex_value = str(hex(id))[2:10].upper()
+                value_to_send = &#34;:&#34;.join([hex_value[i:i+2] for i in range(0, len(hex_value), 2)])
+
                 message_to_send = {
                     &#34;type&#34;: &#34;TAG_READ&#34;,
-                    &#34;payload&#34;: &#34;&#34;
+                    &#34;payload&#34;: value_to_send
                 }
                 self.queue_messages.put(message_to_send)
                 sleep(5)
 
         except KeyboardInterrupt:
-            GPIO.cleanup()
-            raise</code></pre>
+            raise
+        finally:
+            GPIO.cleanup()</code></pre>
 </details>
 </section>
 <section>
@@ -127,17 +132,20 @@ queue_messages (queue): The synchronized queue used to send the tag that the mod
                 print(&#34;Hold a tag near the reader&#34;)
                 id, text = self.reader.read()
                 print(&#34;ID: %s\nText: %s&#34; % (id, text))
-                # execute the high order function
+                hex_value = str(hex(id))[2:10].upper()
+                value_to_send = &#34;:&#34;.join([hex_value[i:i+2] for i in range(0, len(hex_value), 2)])
+
                 message_to_send = {
                     &#34;type&#34;: &#34;TAG_READ&#34;,
-                    &#34;payload&#34;: &#34;&#34;
+                    &#34;payload&#34;: value_to_send
                 }
                 self.queue_messages.put(message_to_send)
                 sleep(5)
 
         except KeyboardInterrupt:
-            GPIO.cleanup()
-            raise</code></pre>
+            raise
+        finally:
+            GPIO.cleanup()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -163,17 +171,20 @@ queue_messages (queue): The synchronized queue used to send the tag that the mod
             print(&#34;Hold a tag near the reader&#34;)
             id, text = self.reader.read()
             print(&#34;ID: %s\nText: %s&#34; % (id, text))
-            # execute the high order function
+            hex_value = str(hex(id))[2:10].upper()
+            value_to_send = &#34;:&#34;.join([hex_value[i:i+2] for i in range(0, len(hex_value), 2)])
+
             message_to_send = {
                 &#34;type&#34;: &#34;TAG_READ&#34;,
-                &#34;payload&#34;: &#34;&#34;
+                &#34;payload&#34;: value_to_send
             }
             self.queue_messages.put(message_to_send)
             sleep(5)
 
     except KeyboardInterrupt:
-        GPIO.cleanup()
-        raise</code></pre>
+        raise
+    finally:
+        GPIO.cleanup()</code></pre>
 </details>
 </dd>
 </dl>

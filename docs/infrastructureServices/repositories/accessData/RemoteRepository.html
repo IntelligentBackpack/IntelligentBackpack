@@ -26,7 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from python.infrastructureServices.modules.RestModule import get_call
+<pre><code class="python">from ...modules.RestModule import get_call
 
 
 class RemoteRepositoryImpl:
@@ -34,7 +34,6 @@ class RemoteRepositoryImpl:
     Class that represents the remote repository, performing the requests to send to the remote
     database
     &#34;&#34;&#34;
-    #TODO usare il valueobject User
     def __init__(self, service_url, request_queue, hash):
         &#34;&#34;&#34;
         Constructor method that create the object of this module
@@ -60,20 +59,18 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         &#34;&#34;&#34;
-        if user is &#34;&#34;:
+        if user == &#34;&#34;:
             return
         print(&#34;AGGIUNGO ELEMENTO DA INVIARE&#34;)
+        user = user.replace(&#34;.&#34;, &#34;-&#34;)
         new_request = {
             &#34;type&#34;: &#34;PATCH&#34;,
             &#34;url&#34;: self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;.json&#34;,
             &#34;payload&#34;: {
-                str(value): &#34;true&#34;
+                str(value): True
             }
         }
         self.request_queue.put(new_request)
-        # req = self.request_queue.get()
-        # element = json.loads(json.dumps(req))
-        # execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])
 
     def remove_element(self, user, value):
         &#34;&#34;&#34;
@@ -85,17 +82,15 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         &#34;&#34;&#34;
-        if user is &#34;&#34;:
+        if user == &#34;&#34;:
             return
+        user = user.replace(&#34;.&#34;, &#34;-&#34;)
         new_request = {
             &#34;type&#34;: &#34;DELETE&#34;,
             &#34;url&#34;: self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;/&#34; + str(value) + &#34;.json&#34;,
             &#34;payload&#34;: {}
         }
         self.request_queue.put(new_request)
-        # req = self.request_queue.get()
-        # element = json.loads(json.dumps(req))
-        # execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])
         return
 
     def find_element(self, user, value):
@@ -108,8 +103,9 @@ class RemoteRepositoryImpl:
             Returns:
                 result (boolean): return true if the element is present, false otherwise
         &#34;&#34;&#34;
-        if user is &#34;&#34;:
+        if user == &#34;&#34;:
             return
+        user = user.replace(&#34;.&#34;, &#34;-&#34;)
         response = get_call(self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;/&#34; + str(value) + &#34;.json&#34;)
         return response.json() is not None</code></pre>
 </details>
@@ -147,7 +143,6 @@ hash (string): The hash id of this device to which add or remove elements</p>
     Class that represents the remote repository, performing the requests to send to the remote
     database
     &#34;&#34;&#34;
-    #TODO usare il valueobject User
     def __init__(self, service_url, request_queue, hash):
         &#34;&#34;&#34;
         Constructor method that create the object of this module
@@ -173,20 +168,18 @@ hash (string): The hash id of this device to which add or remove elements</p>
             Returns:
                 void
         &#34;&#34;&#34;
-        if user is &#34;&#34;:
+        if user == &#34;&#34;:
             return
         print(&#34;AGGIUNGO ELEMENTO DA INVIARE&#34;)
+        user = user.replace(&#34;.&#34;, &#34;-&#34;)
         new_request = {
             &#34;type&#34;: &#34;PATCH&#34;,
             &#34;url&#34;: self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;.json&#34;,
             &#34;payload&#34;: {
-                str(value): &#34;true&#34;
+                str(value): True
             }
         }
         self.request_queue.put(new_request)
-        # req = self.request_queue.get()
-        # element = json.loads(json.dumps(req))
-        # execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])
 
     def remove_element(self, user, value):
         &#34;&#34;&#34;
@@ -198,17 +191,15 @@ hash (string): The hash id of this device to which add or remove elements</p>
             Returns:
                 void
         &#34;&#34;&#34;
-        if user is &#34;&#34;:
+        if user == &#34;&#34;:
             return
+        user = user.replace(&#34;.&#34;, &#34;-&#34;)
         new_request = {
             &#34;type&#34;: &#34;DELETE&#34;,
             &#34;url&#34;: self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;/&#34; + str(value) + &#34;.json&#34;,
             &#34;payload&#34;: {}
         }
         self.request_queue.put(new_request)
-        # req = self.request_queue.get()
-        # element = json.loads(json.dumps(req))
-        # execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])
         return
 
     def find_element(self, user, value):
@@ -221,8 +212,9 @@ hash (string): The hash id of this device to which add or remove elements</p>
             Returns:
                 result (boolean): return true if the element is present, false otherwise
         &#34;&#34;&#34;
-        if user is &#34;&#34;:
+        if user == &#34;&#34;:
             return
+        user = user.replace(&#34;.&#34;, &#34;-&#34;)
         response = get_call(self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;/&#34; + str(value) + &#34;.json&#34;)
         return response.json() is not None</code></pre>
 </details>
@@ -253,14 +245,15 @@ value (string): The value to add into the remote record</p>
         Returns:
             void
     &#34;&#34;&#34;
-    if user is &#34;&#34;:
+    if user == &#34;&#34;:
         return
     print(&#34;AGGIUNGO ELEMENTO DA INVIARE&#34;)
+    user = user.replace(&#34;.&#34;, &#34;-&#34;)
     new_request = {
         &#34;type&#34;: &#34;PATCH&#34;,
         &#34;url&#34;: self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;.json&#34;,
         &#34;payload&#34;: {
-            str(value): &#34;true&#34;
+            str(value): True
         }
     }
     self.request_queue.put(new_request)</code></pre>
@@ -291,8 +284,9 @@ value (string): The value to find from the repository</p>
         Returns:
             result (boolean): return true if the element is present, false otherwise
     &#34;&#34;&#34;
-    if user is &#34;&#34;:
+    if user == &#34;&#34;:
         return
+    user = user.replace(&#34;.&#34;, &#34;-&#34;)
     response = get_call(self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;/&#34; + str(value) + &#34;.json&#34;)
     return response.json() is not None</code></pre>
 </details>
@@ -322,17 +316,15 @@ value (string): The value to remove from the remote database</p>
         Returns:
             void
     &#34;&#34;&#34;
-    if user is &#34;&#34;:
+    if user == &#34;&#34;:
         return
+    user = user.replace(&#34;.&#34;, &#34;-&#34;)
     new_request = {
         &#34;type&#34;: &#34;DELETE&#34;,
         &#34;url&#34;: self.service_url + &#34;/&#34; + user + &#34;/&#34; + self.hash + &#34;/&#34; + str(value) + &#34;.json&#34;,
         &#34;payload&#34;: {}
     }
     self.request_queue.put(new_request)
-    # req = self.request_queue.get()
-    # element = json.loads(json.dumps(req))
-    # execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])
     return</code></pre>
 </details>
 </dd>

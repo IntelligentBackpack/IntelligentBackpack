@@ -37,14 +37,15 @@ and the thread definition that keeps listening incoming messages from cloud.</p>
 &#34;&#34;&#34;This module represents the component device that connects to Azure IoT Hub using an IoTHubSession
 and the thread definition that keeps listening incoming messages from cloud.&#34;&#34;&#34;
 
-
+import calendar
+import time
 import asyncio
 from azure.iot.device import IoTHubSession
 from threading import Thread
 import queue
 
 
-CONNECTION_STRING = &#34;HostName=IntelligentBackpackHub.azure-devices.net;DeviceId=raspTest;SharedAccessKey=NUNHoJX5KVIDuGCRg3fq6e7PAg6R9oDMu0zcdGg+IzY=&#34;
+CONNECTION_STRING = &#34;HostName=IntelligentBackpackHub.azure-devices.net;&#34;
 TOTAL_MESSAGES_RECEIVED = 0
 
 
@@ -53,7 +54,7 @@ class HubIotThread (Thread):
     Thread that performs incoming messages listening.
     &#34;&#34;&#34;
 
-    def __init__(self, messages_queue):
+    def __init__(self, messages_queue, device_id, primary_key):
         &#34;&#34;&#34;
         Constructor method that create the thread object of this module
             Parameters:
@@ -63,6 +64,7 @@ class HubIotThread (Thread):
                 void
         &#34;&#34;&#34;
         Thread.__init__(self)
+        self.connection_string = CONNECTION_STRING + &#34;DeviceId=&#34; + device_id + &#34;;SharedAccessKey=&#34; + primary_key
         self.messages_queue = messages_queue
 
     def run(self):
@@ -72,12 +74,9 @@ class HubIotThread (Thread):
         try:
             asyncio.run(self.main())
         except KeyboardInterrupt or Exception:
-            # Exit application because user indicated they wish to exit.
-            # This will have cancelled `main()` implicitly.
             print(&#34;User initiated exit. Exiting&#34;)
         finally:
             print(&#34;Received {} messages in total&#34;.format(TOTAL_MESSAGES_RECEIVED))
-
 
     async def main(self):
         &#34;&#34;&#34;
@@ -92,32 +91,35 @@ class HubIotThread (Thread):
         print(&#34;Starting C2D sample&#34;)
         print(&#34;Press Ctrl-C to exit&#34;)
         print(&#34;Connecting to IoT Hub...&#34;)
-        async with IoTHubSession.from_connection_string(CONNECTION_STRING) as session:
+        async with IoTHubSession.from_connection_string(self.connection_string) as session:
             print(&#34;Connected to IoT Hub&#34;)
             async with session.messages() as messages:
                 # print(&#34;Waiting to receive messages...&#34;)
                 async for message in messages:
                     TOTAL_MESSAGES_RECEIVED += 1
+                    current_GMT = time.gmtime()
+                    time_stamp = calendar.timegm(current_GMT)
                     print(&#34;Message received with payload: {}&#34;.format(message.payload))
-                    # print(&#34;Email is {}&#34;.format(message.payload.split(&#34;:&#34;)[1]))
+                    print(&#34;TIMESTAMP: {}&#34;.format(time_stamp))
                     if message.payload == &#34;EXIT&#34;:
                         self.messages_queue.put(&#34;EXIT&#34;)
                         raise Exception(&#39;Stop this thing&#39;)
-                    if &#34;REGISTER&#34; in message.payload:
-                        message_to_send = {
-                            &#34;type&#34;: &#34;REGISTER&#34;,
-                            &#34;payload&#34;: {
-                                &#34;email&#34;: message.payload.split(&#34;;&#34;)[1],
-                                &#34;hash&#34;: message.payload.split(&#34;;&#34;)[2]
-                            }
-                        }
-                        self.messages_queue.put(message_to_send)
                     if &#34;UNREGISTER&#34; in message.payload:
                         message_to_send = {
                             &#34;type&#34;: &#34;UNREGISTER&#34;,
                             &#34;payload&#34;: &#34;&#34;
                         }
                         self.messages_queue.put(message_to_send)
+                    else:
+                        if &#34;REGISTER&#34; in message.payload:
+                            message_to_send = {
+                                &#34;type&#34;: &#34;REGISTER&#34;,
+                                &#34;payload&#34;: {
+                                    &#34;email&#34;: message.payload.split(&#34;;&#34;)[1],
+                                    &#34;hash&#34;: message.payload.split(&#34;;&#34;)[2]
+                                }
+                            }
+                            self.messages_queue.put(message_to_send)
                     # test
                     if &#34;NEW_DATA&#34; in message.payload:
                         message_to_send = {
@@ -127,14 +129,11 @@ class HubIotThread (Thread):
                         self.messages_queue.put(message_to_send)
 
 
-
 if __name__ == &#34;__main__&#34;:
     try:
         hub = HubIotThread(queue.Queue())
         asyncio.run(hub.main())
     except KeyboardInterrupt:
-        # Exit application because user indicated they wish to exit.
-        # This will have cancelled `main()` implicitly.
         print(&#34;User initiated exit. Exiting&#34;)
     finally:
         print(&#34;Received {} messages in total&#34;.format(TOTAL_MESSAGES_RECEIVED))</code></pre>
@@ -151,7 +150,7 @@ if __name__ == &#34;__main__&#34;:
 <dl>
 <dt id="python.infrastructureServices.modules.HubIoTModule.HubIotThread"><code class="flex name class">
 <span>class <span class="ident">HubIotThread</span></span>
-<span>(</span><span>messages_queue)</span>
+<span>(</span><span>messages_queue, device_id, primary_key)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Thread that performs incoming messages listening.</p>
@@ -170,7 +169,7 @@ messages_queue (queue): The synchronized queue to send all the received messages
     Thread that performs incoming messages listening.
     &#34;&#34;&#34;
 
-    def __init__(self, messages_queue):
+    def __init__(self, messages_queue, device_id, primary_key):
         &#34;&#34;&#34;
         Constructor method that create the thread object of this module
             Parameters:
@@ -180,6 +179,7 @@ messages_queue (queue): The synchronized queue to send all the received messages
                 void
         &#34;&#34;&#34;
         Thread.__init__(self)
+        self.connection_string = CONNECTION_STRING + &#34;DeviceId=&#34; + device_id + &#34;;SharedAccessKey=&#34; + primary_key
         self.messages_queue = messages_queue
 
     def run(self):
@@ -189,12 +189,9 @@ messages_queue (queue): The synchronized queue to send all the received messages
         try:
             asyncio.run(self.main())
         except KeyboardInterrupt or Exception:
-            # Exit application because user indicated they wish to exit.
-            # This will have cancelled `main()` implicitly.
             print(&#34;User initiated exit. Exiting&#34;)
         finally:
             print(&#34;Received {} messages in total&#34;.format(TOTAL_MESSAGES_RECEIVED))
-
 
     async def main(self):
         &#34;&#34;&#34;
@@ -209,32 +206,35 @@ messages_queue (queue): The synchronized queue to send all the received messages
         print(&#34;Starting C2D sample&#34;)
         print(&#34;Press Ctrl-C to exit&#34;)
         print(&#34;Connecting to IoT Hub...&#34;)
-        async with IoTHubSession.from_connection_string(CONNECTION_STRING) as session:
+        async with IoTHubSession.from_connection_string(self.connection_string) as session:
             print(&#34;Connected to IoT Hub&#34;)
             async with session.messages() as messages:
                 # print(&#34;Waiting to receive messages...&#34;)
                 async for message in messages:
                     TOTAL_MESSAGES_RECEIVED += 1
+                    current_GMT = time.gmtime()
+                    time_stamp = calendar.timegm(current_GMT)
                     print(&#34;Message received with payload: {}&#34;.format(message.payload))
-                    # print(&#34;Email is {}&#34;.format(message.payload.split(&#34;:&#34;)[1]))
+                    print(&#34;TIMESTAMP: {}&#34;.format(time_stamp))
                     if message.payload == &#34;EXIT&#34;:
                         self.messages_queue.put(&#34;EXIT&#34;)
                         raise Exception(&#39;Stop this thing&#39;)
-                    if &#34;REGISTER&#34; in message.payload:
-                        message_to_send = {
-                            &#34;type&#34;: &#34;REGISTER&#34;,
-                            &#34;payload&#34;: {
-                                &#34;email&#34;: message.payload.split(&#34;;&#34;)[1],
-                                &#34;hash&#34;: message.payload.split(&#34;;&#34;)[2]
-                            }
-                        }
-                        self.messages_queue.put(message_to_send)
                     if &#34;UNREGISTER&#34; in message.payload:
                         message_to_send = {
                             &#34;type&#34;: &#34;UNREGISTER&#34;,
                             &#34;payload&#34;: &#34;&#34;
                         }
                         self.messages_queue.put(message_to_send)
+                    else:
+                        if &#34;REGISTER&#34; in message.payload:
+                            message_to_send = {
+                                &#34;type&#34;: &#34;REGISTER&#34;,
+                                &#34;payload&#34;: {
+                                    &#34;email&#34;: message.payload.split(&#34;;&#34;)[1],
+                                    &#34;hash&#34;: message.payload.split(&#34;;&#34;)[2]
+                                }
+                            }
+                            self.messages_queue.put(message_to_send)
                     # test
                     if &#34;NEW_DATA&#34; in message.payload:
                         message_to_send = {
@@ -276,32 +276,35 @@ all the incoming messages from the cloud, that could be different:
     print(&#34;Starting C2D sample&#34;)
     print(&#34;Press Ctrl-C to exit&#34;)
     print(&#34;Connecting to IoT Hub...&#34;)
-    async with IoTHubSession.from_connection_string(CONNECTION_STRING) as session:
+    async with IoTHubSession.from_connection_string(self.connection_string) as session:
         print(&#34;Connected to IoT Hub&#34;)
         async with session.messages() as messages:
             # print(&#34;Waiting to receive messages...&#34;)
             async for message in messages:
                 TOTAL_MESSAGES_RECEIVED += 1
+                current_GMT = time.gmtime()
+                time_stamp = calendar.timegm(current_GMT)
                 print(&#34;Message received with payload: {}&#34;.format(message.payload))
-                # print(&#34;Email is {}&#34;.format(message.payload.split(&#34;:&#34;)[1]))
+                print(&#34;TIMESTAMP: {}&#34;.format(time_stamp))
                 if message.payload == &#34;EXIT&#34;:
                     self.messages_queue.put(&#34;EXIT&#34;)
                     raise Exception(&#39;Stop this thing&#39;)
-                if &#34;REGISTER&#34; in message.payload:
-                    message_to_send = {
-                        &#34;type&#34;: &#34;REGISTER&#34;,
-                        &#34;payload&#34;: {
-                            &#34;email&#34;: message.payload.split(&#34;;&#34;)[1],
-                            &#34;hash&#34;: message.payload.split(&#34;;&#34;)[2]
-                        }
-                    }
-                    self.messages_queue.put(message_to_send)
                 if &#34;UNREGISTER&#34; in message.payload:
                     message_to_send = {
                         &#34;type&#34;: &#34;UNREGISTER&#34;,
                         &#34;payload&#34;: &#34;&#34;
                     }
                     self.messages_queue.put(message_to_send)
+                else:
+                    if &#34;REGISTER&#34; in message.payload:
+                        message_to_send = {
+                            &#34;type&#34;: &#34;REGISTER&#34;,
+                            &#34;payload&#34;: {
+                                &#34;email&#34;: message.payload.split(&#34;;&#34;)[1],
+                                &#34;hash&#34;: message.payload.split(&#34;;&#34;)[2]
+                            }
+                        }
+                        self.messages_queue.put(message_to_send)
                 # test
                 if &#34;NEW_DATA&#34; in message.payload:
                     message_to_send = {
@@ -327,8 +330,6 @@ all the incoming messages from the cloud, that could be different:
     try:
         asyncio.run(self.main())
     except KeyboardInterrupt or Exception:
-        # Exit application because user indicated they wish to exit.
-        # This will have cancelled `main()` implicitly.
         print(&#34;User initiated exit. Exiting&#34;)
     finally:
         print(&#34;Received {} messages in total&#34;.format(TOTAL_MESSAGES_RECEIVED))</code></pre>

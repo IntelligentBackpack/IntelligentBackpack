@@ -27,9 +27,18 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python"># contains all threads to start as static array of singletons
-from ...infrastructureServices.modules import RestModule, LedModule, HubIoTModule
+from ...infrastructureServices.modules import RestModule, HubIoTModule
 from ..dependencyInjection.get_sync_utils import SyncUtils
 from ...infrastructureServices.repositories.RepositoryGateway import RepositoryGatewayImpl
+from python.application.preferences import preferences_utils
+from python.infrastructureServices.modules.RestModule import put_call
+try:
+    from ...infrastructureServices.modules import RFIDModule
+except ImportError:
+    pass
+
+
+CONFIG_FILE_PATH = &#34;./resources/device_config.json&#34;
 
 
 def get_remote_db_url():
@@ -38,6 +47,33 @@ def get_remote_db_url():
     :return: the string url of the remote database
     &#34;&#34;&#34;
     return &#34;https://intelligentbackpack-d463a-default-rtdb.europe-west1.firebasedatabase.app&#34;
+
+
+def initial_setup():
+    preferences_utils.create_config_file(CONFIG_FILE_PATH)
+
+    device_name = preferences_utils.get_device_id(CONFIG_FILE_PATH)
+    primary_key = preferences_utils.get_device_key(CONFIG_FILE_PATH)
+    username = preferences_utils.get_username(CONFIG_FILE_PATH)
+    if device_name is None:
+        raise ValueError(&#39;Device config file not found!&#39;)
+    if primary_key is None:
+        raise ValueError(&#39;Device config file not found!&#39;)
+    if primary_key == &#34;&#34;:
+        register_request = {
+            &#34;url&#34;: &#34;https://managebackpackservice.azurewebsites.net/addDevice/raspTest1&#34;,
+            &#34;payload&#34;: {
+
+            }
+        }
+        response = put_call(register_request[&#34;url&#34;], register_request[&#34;payload&#34;])
+
+        if response.status_code == &#34;200&#34; or response.status_code == 200:
+            json_response = response.json()
+            primary_key = json_response[&#34;authentication&#34;][&#34;symmetricKey&#34;][&#34;primaryKey&#34;]
+            preferences_utils.write_device_key(CONFIG_FILE_PATH, primary_key)
+
+    return device_name, primary_key, username
 
 
 class ServiceLocator:
@@ -56,14 +92,22 @@ class ServiceLocator:
         - and so on
         &#34;&#34;&#34;
         self.sync_objects = SyncUtils()
-        hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages)
+
+        device_name, key, self.username = initial_setup()
+
+        hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages, device_name, key)
+        modulename = &#39;RFIDModule&#39;
+        if modulename not in sys.modules:
+            rfid_thread = RFIDModule.RFIDReader(self.sync_objects.queue_messages)
+        else:
+            rfid_thread = None
         network_thread = RestModule.NetworkThread(&#34;Thread#Network&#34;, self.sync_objects.queue_requests)
         network_thread.setDaemon(True)
 
         self.repository = RepositoryGatewayImpl(&#34;db&#34;)
-        self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests)
+        self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests, device_name)
 
-        self.modules = [hub_thread, network_thread]
+        self.modules = [hub_thread, network_thread, rfid_thread]
 
     def get_repository(self):
         &#34;&#34;&#34;
@@ -71,6 +115,15 @@ class ServiceLocator:
         :return: the repository gateway
         &#34;&#34;&#34;
         return self.repository
+
+    def get_username(self):
+        &#34;&#34;&#34;
+        Getter method for the username registered
+        :return: the username registered
+        &#34;&#34;&#34;
+        if self.username is None:
+            return &#34;&#34;
+        return self.username
 
     def get_queue(self):
         &#34;&#34;&#34;
@@ -119,6 +172,42 @@ class ServiceLocator:
     return &#34;https://intelligentbackpack-d463a-default-rtdb.europe-west1.firebasedatabase.app&#34;</code></pre>
 </details>
 </dd>
+<dt id="python.application.serviceLocator.backpack_service_locator.initial_setup"><code class="name flex">
+<span>def <span class="ident">initial_setup</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def initial_setup():
+    preferences_utils.create_config_file(CONFIG_FILE_PATH)
+
+    device_name = preferences_utils.get_device_id(CONFIG_FILE_PATH)
+    primary_key = preferences_utils.get_device_key(CONFIG_FILE_PATH)
+    username = preferences_utils.get_username(CONFIG_FILE_PATH)
+    if device_name is None:
+        raise ValueError(&#39;Device config file not found!&#39;)
+    if primary_key is None:
+        raise ValueError(&#39;Device config file not found!&#39;)
+    if primary_key == &#34;&#34;:
+        register_request = {
+            &#34;url&#34;: &#34;https://managebackpackservice.azurewebsites.net/addDevice/raspTest1&#34;,
+            &#34;payload&#34;: {
+
+            }
+        }
+        response = put_call(register_request[&#34;url&#34;], register_request[&#34;payload&#34;])
+
+        if response.status_code == &#34;200&#34; or response.status_code == 200:
+            json_response = response.json()
+            primary_key = json_response[&#34;authentication&#34;][&#34;symmetricKey&#34;][&#34;primaryKey&#34;]
+            preferences_utils.write_device_key(CONFIG_FILE_PATH, primary_key)
+
+    return device_name, primary_key, username</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -156,14 +245,22 @@ module. The most important dependencies are:
         - and so on
         &#34;&#34;&#34;
         self.sync_objects = SyncUtils()
-        hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages)
+
+        device_name, key, self.username = initial_setup()
+
+        hub_thread = HubIoTModule.HubIotThread(self.sync_objects.queue_messages, device_name, key)
+        modulename = &#39;RFIDModule&#39;
+        if modulename not in sys.modules:
+            rfid_thread = RFIDModule.RFIDReader(self.sync_objects.queue_messages)
+        else:
+            rfid_thread = None
         network_thread = RestModule.NetworkThread(&#34;Thread#Network&#34;, self.sync_objects.queue_requests)
         network_thread.setDaemon(True)
 
         self.repository = RepositoryGatewayImpl(&#34;db&#34;)
-        self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests)
+        self.repository.set_remote(get_remote_db_url(), self.sync_objects.queue_requests, device_name)
 
-        self.modules = [hub_thread, network_thread]
+        self.modules = [hub_thread, network_thread, rfid_thread]
 
     def get_repository(self):
         &#34;&#34;&#34;
@@ -171,6 +268,15 @@ module. The most important dependencies are:
         :return: the repository gateway
         &#34;&#34;&#34;
         return self.repository
+
+    def get_username(self):
+        &#34;&#34;&#34;
+        Getter method for the username registered
+        :return: the username registered
+        &#34;&#34;&#34;
+        if self.username is None:
+            return &#34;&#34;
+        return self.username
 
     def get_queue(self):
         &#34;&#34;&#34;
@@ -267,6 +373,26 @@ module. The most important dependencies are:
     return self.repository</code></pre>
 </details>
 </dd>
+<dt id="python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_username"><code class="name flex">
+<span>def <span class="ident">get_username</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Getter method for the username registered
+:return: the username registered</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_username(self):
+    &#34;&#34;&#34;
+    Getter method for the username registered
+    :return: the username registered
+    &#34;&#34;&#34;
+    if self.username is None:
+        return &#34;&#34;
+    return self.username</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -286,6 +412,7 @@ module. The most important dependencies are:
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="python.application.serviceLocator.backpack_service_locator.get_remote_db_url" href="#python.application.serviceLocator.backpack_service_locator.get_remote_db_url">get_remote_db_url</a></code></li>
+<li><code><a title="python.application.serviceLocator.backpack_service_locator.initial_setup" href="#python.application.serviceLocator.backpack_service_locator.initial_setup">initial_setup</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
@@ -297,6 +424,7 @@ module. The most important dependencies are:
 <li><code><a title="python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_modules" href="#python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_modules">get_modules</a></code></li>
 <li><code><a title="python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_queue" href="#python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_queue">get_queue</a></code></li>
 <li><code><a title="python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_repository" href="#python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_repository">get_repository</a></code></li>
+<li><code><a title="python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_username" href="#python.application.serviceLocator.backpack_service_locator.ServiceLocator.get_username">get_username</a></code></li>
 </ul>
 </li>
 </ul>

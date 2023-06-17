@@ -59,7 +59,6 @@ class BackpackLogicService:
         &#34;&#34;&#34;
         book = Book(isbn=isbn, tagId=tag)
         if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
-            print(&#34;AGGIUNGO&#34;)
             self.add_element_into_backpack(tag)
         else:
             self.remove_element_into_backpack(tag)
@@ -89,10 +88,6 @@ class BackpackLogicService:
         element = self.repository.find_element_into_repository(value)
         return element
 
-    def check_element_missed(self):
-        # TODO
-        return
-
     def get_username(self):
         &#34;&#34;&#34;
         Getter method that returns the username of the owner
@@ -100,17 +95,30 @@ class BackpackLogicService:
         &#34;&#34;&#34;
         return self.backpack.user_email
 
+    def set_id(self, id):
+        &#34;&#34;&#34;
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_id(id)
+
     def register(self, user):
         &#34;&#34;&#34;
         Method that register the user owner
-        :param user: the
-        :return:
+        :param user: the username string
+        :return: none
         &#34;&#34;&#34;
         self.backpack.set_user(user)
         self.repository.set_user(user)
 
     def unregister(self):
-        self.backpack.set_user(&#34;&#34;)</code></pre>
+        &#34;&#34;&#34;
+        Method that unregister the user
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_user(&#34;&#34;)
+        self.repository.set_user(None)</code></pre>
 </details>
 </section>
 <section>
@@ -161,7 +169,6 @@ backpack</p>
         &#34;&#34;&#34;
         book = Book(isbn=isbn, tagId=tag)
         if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
-            print(&#34;AGGIUNGO&#34;)
             self.add_element_into_backpack(tag)
         else:
             self.remove_element_into_backpack(tag)
@@ -191,10 +198,6 @@ backpack</p>
         element = self.repository.find_element_into_repository(value)
         return element
 
-    def check_element_missed(self):
-        # TODO
-        return
-
     def get_username(self):
         &#34;&#34;&#34;
         Getter method that returns the username of the owner
@@ -202,17 +205,30 @@ backpack</p>
         &#34;&#34;&#34;
         return self.backpack.user_email
 
+    def set_id(self, id):
+        &#34;&#34;&#34;
+        Method that register the user owner
+        :param user: the username string
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_id(id)
+
     def register(self, user):
         &#34;&#34;&#34;
         Method that register the user owner
-        :param user: the
-        :return:
+        :param user: the username string
+        :return: none
         &#34;&#34;&#34;
         self.backpack.set_user(user)
         self.repository.set_user(user)
 
     def unregister(self):
-        self.backpack.set_user(&#34;&#34;)</code></pre>
+        &#34;&#34;&#34;
+        Method that unregister the user
+        :return: none
+        &#34;&#34;&#34;
+        self.backpack.set_user(&#34;&#34;)
+        self.repository.set_user(None)</code></pre>
 </details>
 <h3>Methods</h3>
 <dl>
@@ -234,20 +250,6 @@ backpack</p>
     :return: void
     &#34;&#34;&#34;
     self.repository.add_element_into_repository(value)</code></pre>
-</details>
-</dd>
-<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.check_element_missed"><code class="name flex">
-<span>def <span class="ident">check_element_missed</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def check_element_missed(self):
-    # TODO
-    return</code></pre>
 </details>
 </dd>
 <dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.find_element_into_backpack"><code class="name flex">
@@ -310,7 +312,6 @@ backpack</p>
     &#34;&#34;&#34;
     book = Book(isbn=isbn, tagId=tag)
     if CanInsertNewObject().check_validity(self.repository, self.backpack, book):
-        print(&#34;AGGIUNGO&#34;)
         self.add_element_into_backpack(tag)
     else:
         self.remove_element_into_backpack(tag)</code></pre>
@@ -321,8 +322,8 @@ backpack</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Method that register the user owner
-:param user: the
-:return:</p></div>
+:param user: the username string
+:return: none</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -330,8 +331,8 @@ backpack</p>
 <pre><code class="python">def register(self, user):
     &#34;&#34;&#34;
     Method that register the user owner
-    :param user: the
-    :return:
+    :param user: the username string
+    :return: none
     &#34;&#34;&#34;
     self.backpack.set_user(user)
     self.repository.set_user(user)</code></pre>
@@ -357,17 +358,43 @@ backpack</p>
     self.repository.remove_element_into_repository(value)</code></pre>
 </details>
 </dd>
+<dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.set_id"><code class="name flex">
+<span>def <span class="ident">set_id</span></span>(<span>self, id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that register the user owner
+:param user: the username string
+:return: none</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_id(self, id):
+    &#34;&#34;&#34;
+    Method that register the user owner
+    :param user: the username string
+    :return: none
+    &#34;&#34;&#34;
+    self.backpack.set_id(id)</code></pre>
+</details>
+</dd>
 <dt id="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.unregister"><code class="name flex">
 <span>def <span class="ident">unregister</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Method that unregister the user
+:return: none</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def unregister(self):
-    self.backpack.set_user(&#34;&#34;)</code></pre>
+    &#34;&#34;&#34;
+    Method that unregister the user
+    :return: none
+    &#34;&#34;&#34;
+    self.backpack.set_user(&#34;&#34;)
+    self.repository.set_user(None)</code></pre>
 </details>
 </dd>
 </dl>
@@ -392,12 +419,12 @@ backpack</p>
 <h4><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService">BackpackLogicService</a></code></h4>
 <ul class="">
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.add_element_into_backpack" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.add_element_into_backpack">add_element_into_backpack</a></code></li>
-<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.check_element_missed" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.check_element_missed">check_element_missed</a></code></li>
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.find_element_into_backpack" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.find_element_into_backpack">find_element_into_backpack</a></code></li>
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.get_username" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.get_username">get_username</a></code></li>
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.manage_element" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.manage_element">manage_element</a></code></li>
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.register" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.register">register</a></code></li>
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.remove_element_into_backpack" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.remove_element_into_backpack">remove_element_into_backpack</a></code></li>
+<li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.set_id" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.set_id">set_id</a></code></li>
 <li><code><a title="python.domainModel.domainServices.BackpackLogic.BackpackLogicService.unregister" href="#python.domainModel.domainServices.BackpackLogic.BackpackLogicService.unregister">unregister</a></code></li>
 </ul>
 </li>

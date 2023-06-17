@@ -27,6 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from ..valueObjects.Book import Book
+from ..valueObjects.User import User
 
 
 class Backpack:
@@ -38,7 +39,8 @@ class Backpack:
         &#34;&#34;&#34;
         Constructor method that creates the backpack
         &#34;&#34;&#34;
-        self.user_email = &#34;&#34;
+        self.id = &#34;&#34;
+        self.user = User()
         self.books_lastly_added = []
 
     def set_user(self, email):
@@ -47,7 +49,22 @@ class Backpack:
         :param email: email of the owner
         :return: void
         &#34;&#34;&#34;
-        self.user_email = email
+        self.user.email = email
+        return
+
+    def get_user(self):
+        &#34;&#34;&#34;
+        Method that return the user email of the owner
+        &#34;&#34;&#34;
+        return self.user.email
+
+    def set_id(self, id):
+        &#34;&#34;&#34;
+        Method that set the user email of the owner
+        :param id: id of the backpack
+        :return: void
+        &#34;&#34;&#34;
+        self.id = id
         return
 
     def add_book(self, book: Book):
@@ -105,7 +122,8 @@ class Backpack:
         &#34;&#34;&#34;
         Constructor method that creates the backpack
         &#34;&#34;&#34;
-        self.user_email = &#34;&#34;
+        self.id = &#34;&#34;
+        self.user = User()
         self.books_lastly_added = []
 
     def set_user(self, email):
@@ -114,7 +132,22 @@ class Backpack:
         :param email: email of the owner
         :return: void
         &#34;&#34;&#34;
-        self.user_email = email
+        self.user.email = email
+        return
+
+    def get_user(self):
+        &#34;&#34;&#34;
+        Method that return the user email of the owner
+        &#34;&#34;&#34;
+        return self.user.email
+
+    def set_id(self, id):
+        &#34;&#34;&#34;
+        Method that set the user email of the owner
+        :param id: id of the backpack
+        :return: void
+        &#34;&#34;&#34;
+        self.id = id
         return
 
     def add_book(self, book: Book):
@@ -186,6 +219,22 @@ class Backpack:
     return book in self.books_lastly_added</code></pre>
 </details>
 </dd>
+<dt id="python.domainModel.entities.Backpack.Backpack.get_user"><code class="name flex">
+<span>def <span class="ident">get_user</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that return the user email of the owner</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_user(self):
+    &#34;&#34;&#34;
+    Method that return the user email of the owner
+    &#34;&#34;&#34;
+    return self.user.email</code></pre>
+</details>
+</dd>
 <dt id="python.domainModel.entities.Backpack.Backpack.remove_book"><code class="name flex">
 <span>def <span class="ident">remove_book</span></span>(<span>self, book: <a title="python.domainModel.valueObjects.Book.Book" href="../valueObjects/Book.html#python.domainModel.valueObjects.Book.Book">Book</a>)</span>
 </code></dt>
@@ -207,6 +256,27 @@ class Backpack:
     return</code></pre>
 </details>
 </dd>
+<dt id="python.domainModel.entities.Backpack.Backpack.set_id"><code class="name flex">
+<span>def <span class="ident">set_id</span></span>(<span>self, id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that set the user email of the owner
+:param id: id of the backpack
+:return: void</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_id(self, id):
+    &#34;&#34;&#34;
+    Method that set the user email of the owner
+    :param id: id of the backpack
+    :return: void
+    &#34;&#34;&#34;
+    self.id = id
+    return</code></pre>
+</details>
+</dd>
 <dt id="python.domainModel.entities.Backpack.Backpack.set_user"><code class="name flex">
 <span>def <span class="ident">set_user</span></span>(<span>self, email)</span>
 </code></dt>
@@ -224,7 +294,7 @@ class Backpack:
     :param email: email of the owner
     :return: void
     &#34;&#34;&#34;
-    self.user_email = email
+    self.user.email = email
     return</code></pre>
 </details>
 </dd>
@@ -248,10 +318,12 @@ class Backpack:
 <ul>
 <li>
 <h4><code><a title="python.domainModel.entities.Backpack.Backpack" href="#python.domainModel.entities.Backpack.Backpack">Backpack</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="python.domainModel.entities.Backpack.Backpack.add_book" href="#python.domainModel.entities.Backpack.Backpack.add_book">add_book</a></code></li>
 <li><code><a title="python.domainModel.entities.Backpack.Backpack.check_book" href="#python.domainModel.entities.Backpack.Backpack.check_book">check_book</a></code></li>
+<li><code><a title="python.domainModel.entities.Backpack.Backpack.get_user" href="#python.domainModel.entities.Backpack.Backpack.get_user">get_user</a></code></li>
 <li><code><a title="python.domainModel.entities.Backpack.Backpack.remove_book" href="#python.domainModel.entities.Backpack.Backpack.remove_book">remove_book</a></code></li>
+<li><code><a title="python.domainModel.entities.Backpack.Backpack.set_id" href="#python.domainModel.entities.Backpack.Backpack.set_id">set_id</a></code></li>
 <li><code><a title="python.domainModel.entities.Backpack.Backpack.set_user" href="#python.domainModel.entities.Backpack.Backpack.set_user">set_user</a></code></li>
 </ul>
 </li>

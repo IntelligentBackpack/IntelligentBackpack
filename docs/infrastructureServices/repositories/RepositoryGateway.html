@@ -63,18 +63,18 @@ class RepositoryGatewayImpl(Repository):
         &#34;&#34;&#34;
         self.user = user_name
 
-    def set_remote(self, url, queue):
+    def set_remote(self, url, queue, hash):
         &#34;&#34;&#34;
         Method that set the remote repository
             Parameters:
                 url (string): The url of the remote database where to send the queries
                 queue (queue): The queue to use to send the remote requests
+                hash (string): The hash that identifies the record on the remote database
 
             Returns:
                 void
         &#34;&#34;&#34;
-        # TODO gestire hash
-        self.remote_repo = RemoteRepositoryImpl(url, queue, &#34;hash&#34;)
+        self.remote_repo = RemoteRepositoryImpl(url, queue, hash)
 
     def sync_remote(self):
         &#34;&#34;&#34;
@@ -209,18 +209,18 @@ name (string): The name of the database</p>
         &#34;&#34;&#34;
         self.user = user_name
 
-    def set_remote(self, url, queue):
+    def set_remote(self, url, queue, hash):
         &#34;&#34;&#34;
         Method that set the remote repository
             Parameters:
                 url (string): The url of the remote database where to send the queries
                 queue (queue): The queue to use to send the remote requests
+                hash (string): The hash that identifies the record on the remote database
 
             Returns:
                 void
         &#34;&#34;&#34;
-        # TODO gestire hash
-        self.remote_repo = RemoteRepositoryImpl(url, queue, &#34;hash&#34;)
+        self.remote_repo = RemoteRepositoryImpl(url, queue, hash)
 
     def sync_remote(self):
         &#34;&#34;&#34;
@@ -439,13 +439,14 @@ tag (string): tag to remove from the repository</p>
 </details>
 </dd>
 <dt id="python.infrastructureServices.repositories.RepositoryGateway.RepositoryGatewayImpl.set_remote"><code class="name flex">
-<span>def <span class="ident">set_remote</span></span>(<span>self, url, queue)</span>
+<span>def <span class="ident">set_remote</span></span>(<span>self, url, queue, hash)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Method that set the remote repository
 Parameters:
 url (string): The url of the remote database where to send the queries
-queue (queue): The queue to use to send the remote requests</p>
+queue (queue): The queue to use to send the remote requests
+hash (string): The hash that identifies the record on the remote database</p>
 <pre><code>Returns:
     void
 </code></pre></div>
@@ -453,18 +454,18 @@ queue (queue): The queue to use to send the remote requests</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_remote(self, url, queue):
+<pre><code class="python">def set_remote(self, url, queue, hash):
     &#34;&#34;&#34;
     Method that set the remote repository
         Parameters:
             url (string): The url of the remote database where to send the queries
             queue (queue): The queue to use to send the remote requests
+            hash (string): The hash that identifies the record on the remote database
 
         Returns:
             void
     &#34;&#34;&#34;
-    # TODO gestire hash
-    self.remote_repo = RemoteRepositoryImpl(url, queue, &#34;hash&#34;)</code></pre>
+    self.remote_repo = RemoteRepositoryImpl(url, queue, hash)</code></pre>
 </details>
 </dd>
 <dt id="python.infrastructureServices.repositories.RepositoryGateway.RepositoryGatewayImpl.set_user"><code class="name flex">

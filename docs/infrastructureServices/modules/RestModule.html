@@ -31,18 +31,21 @@ import requests
 import time
 from threading import Thread
 import json
+
+
 &#34;&#34;&#34;
 Module that manage and send all the HTTP pending requests until the connection is available
 &#34;&#34;&#34;
 
+
 class NetworkThread (Thread):
+
     &#34;&#34;&#34;
     Network thread that manages all the HTTP requests to be performed, using a synchronized queue
     to receive the requests to send and wait for.
     If the connection is not set or working, the requests are tried until the connection is on
     and the device ready to sent them
     &#34;&#34;&#34;
-
 
     def __init__(self, name, queue):
         &#34;&#34;&#34;
@@ -63,7 +66,7 @@ class NetworkThread (Thread):
         Method that executes the thread
         &#34;&#34;&#34;
         print(&#34;Thread &#39;&#34; + self.name + &#34;&#39; avviato&#34;)
-        while (True):
+        while True:
             request = self.queue.get()
             element = json.loads(json.dumps(request))
             execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])
@@ -86,6 +89,25 @@ def get_call(url):
         print(e)
 
 
+def put_call(url, payload):
+    &#34;&#34;&#34;
+    Method that performs HTTP PUT call requests to the url and with the payload received in input
+    Parameters:
+            url (string): The url to send the request
+            payload (string): The payload to send inside the request
+
+        Returns:
+            void
+    &#34;&#34;&#34;
+    try:
+        headers = {&#39;content-type&#39;: &#39;application/json&#39;}
+        response = requests.put(url, payload, headers=headers)
+        return response
+    except Exception as e:
+        print(&#34;Error&#34;)
+        print(e)
+
+
 def execute_calls(type, url, payload):
     &#34;&#34;&#34;
     Method that performs HTTP PATH or DELETE requests to the url and with the payload received in input
@@ -99,13 +121,15 @@ def execute_calls(type, url, payload):
     &#34;&#34;&#34;
 
     terminated = False
-    while not (terminated):
+    while not terminated:
         try:
             headers = {&#39;content-type&#39;: &#39;application/json&#39;}
             if type == &#34;PATCH&#34;:
                 requests.patch(url, json.dumps(payload), headers=headers)
             elif type == &#34;DELETE&#34;:
                 requests.delete(url, headers=headers)
+            elif type == &#34;PUT&#34;:
+                requests.put(url, {}, headers=headers)
             terminated = True
             time.sleep(5)
         except Exception as e:
@@ -150,13 +174,15 @@ void</p></div>
     &#34;&#34;&#34;
 
     terminated = False
-    while not (terminated):
+    while not terminated:
         try:
             headers = {&#39;content-type&#39;: &#39;application/json&#39;}
             if type == &#34;PATCH&#34;:
                 requests.patch(url, json.dumps(payload), headers=headers)
             elif type == &#34;DELETE&#34;:
                 requests.delete(url, headers=headers)
+            elif type == &#34;PUT&#34;:
+                requests.put(url, {}, headers=headers)
             terminated = True
             time.sleep(5)
         except Exception as e:
@@ -196,6 +222,40 @@ url (string): The url to send the request</p>
         print(e)</code></pre>
 </details>
 </dd>
+<dt id="python.infrastructureServices.modules.RestModule.put_call"><code class="name flex">
+<span>def <span class="ident">put_call</span></span>(<span>url, payload)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that performs HTTP PUT call requests to the url and with the payload received in input</p>
+<h2 id="parameters">Parameters</h2>
+<pre><code>url (string): The url to send the request
+payload (string): The payload to send inside the request
+</code></pre>
+<p>Returns:
+void</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def put_call(url, payload):
+    &#34;&#34;&#34;
+    Method that performs HTTP PUT call requests to the url and with the payload received in input
+    Parameters:
+            url (string): The url to send the request
+            payload (string): The payload to send inside the request
+
+        Returns:
+            void
+    &#34;&#34;&#34;
+    try:
+        headers = {&#39;content-type&#39;: &#39;application/json&#39;}
+        response = requests.put(url, payload, headers=headers)
+        return response
+    except Exception as e:
+        print(&#34;Error&#34;)
+        print(e)</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -222,13 +282,13 @@ queue (queue): The synchronized queue used to receive all the requests to send</
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class NetworkThread (Thread):
+
     &#34;&#34;&#34;
     Network thread that manages all the HTTP requests to be performed, using a synchronized queue
     to receive the requests to send and wait for.
     If the connection is not set or working, the requests are tried until the connection is on
     and the device ready to sent them
     &#34;&#34;&#34;
-
 
     def __init__(self, name, queue):
         &#34;&#34;&#34;
@@ -249,7 +309,7 @@ queue (queue): The synchronized queue used to receive all the requests to send</
         Method that executes the thread
         &#34;&#34;&#34;
         print(&#34;Thread &#39;&#34; + self.name + &#34;&#39; avviato&#34;)
-        while (True):
+        while True:
             request = self.queue.get()
             element = json.loads(json.dumps(request))
             execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])</code></pre>
@@ -274,7 +334,7 @@ queue (queue): The synchronized queue used to receive all the requests to send</
     Method that executes the thread
     &#34;&#34;&#34;
     print(&#34;Thread &#39;&#34; + self.name + &#34;&#39; avviato&#34;)
-    while (True):
+    while True:
         request = self.queue.get()
         element = json.loads(json.dumps(request))
         execute_calls(element[&#34;type&#34;], element[&#34;url&#34;], element[&#34;payload&#34;])</code></pre>
@@ -300,6 +360,7 @@ queue (queue): The synchronized queue used to receive all the requests to send</
 <ul class="">
 <li><code><a title="python.infrastructureServices.modules.RestModule.execute_calls" href="#python.infrastructureServices.modules.RestModule.execute_calls">execute_calls</a></code></li>
 <li><code><a title="python.infrastructureServices.modules.RestModule.get_call" href="#python.infrastructureServices.modules.RestModule.get_call">get_call</a></code></li>
+<li><code><a title="python.infrastructureServices.modules.RestModule.put_call" href="#python.infrastructureServices.modules.RestModule.put_call">put_call</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
