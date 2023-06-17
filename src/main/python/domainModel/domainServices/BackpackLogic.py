@@ -17,7 +17,6 @@ class BackpackLogicService:
         :param repository: the repository to use
         """
         if isinstance(repository, RepositoryAB):
-            # TODO exception
             pass
         self.repository = repository
         self.backpack = Backpack()

@@ -57,13 +57,10 @@ class HubIotThread (Thread):
        - NEW_DATA: sent with the data that will be added to the device. Used only for debug purpose
        """
         global TOTAL_MESSAGES_RECEIVED
-        print("Starting C2D sample")
-        print("Press Ctrl-C to exit")
         print("Connecting to IoT Hub...")
         async with IoTHubSession.from_connection_string(self.connection_string) as session:
             print("Connected to IoT Hub")
             async with session.messages() as messages:
-                # print("Waiting to receive messages...")
                 async for message in messages:
                     TOTAL_MESSAGES_RECEIVED += 1
                     current_GMT = time.gmtime()
@@ -89,13 +86,6 @@ class HubIotThread (Thread):
                                 }
                             }
                             self.messages_queue.put(message_to_send)
-                    # test
-                    if "NEW_DATA" in message.payload:
-                        message_to_send = {
-                            "type": "TAG_READ",
-                            "payload": "fedfwefwe"
-                        }
-                        self.messages_queue.put(message_to_send)
 
 
 if __name__ == "__main__":
