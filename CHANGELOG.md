@@ -1,3 +1,15 @@
+## [1.0.6](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.5...1.0.6) (2023-06-17)
+
+
+### Bug Fixes
+
+* fixed delete call to clear remote database ([f86b977](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/f86b97745beb64ecd6240d39800002bf3c7b9b86))
+
+
+### General maintenance
+
+* merge resolution ([9a842ef](https://github.com/IntelligentBackpack/IntelligentBackpack/commit/9a842efcfe093c7fb2f468e9241472d5e0a663c9))
+
 ## [1.0.5](https://github.com/IntelligentBackpack/IntelligentBackpack/compare/1.0.4...1.0.5) (2023-06-17)
 
 
