@@ -74,14 +74,6 @@ tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("qualityCode") {
     command = "-m flake8 --extend-ignore ${flakeExcludeTypes.joinToString(separator = ", ")} src"
 }
 
-tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execSub") {
-    command = "src/main/python/applicationServices/sample/servicebus_sub.py"
-}
-
-tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("execPub") {
-    command = "src/main/python/applicationServices/sample/servicebus_pub.py"
-}
-
 tasks.register<ru.vyarus.gradle.plugin.python.task.PythonTask>("setup") {
     command = "setup.py install"
 }

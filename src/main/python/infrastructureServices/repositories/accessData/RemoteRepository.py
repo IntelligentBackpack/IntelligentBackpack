@@ -31,7 +31,7 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         """
-        if user == "":
+        if user == "" or user is None:
             return
         user = user.replace(".", "-")
         new_request = {
@@ -44,7 +44,7 @@ class RemoteRepositoryImpl:
         self.request_queue.put(new_request)
 
     def clear(self, user):
-        if user == "":
+        if user == "" or user is None:
             return
         user = user.replace(".", "-")
         new_request = {
@@ -66,7 +66,7 @@ class RemoteRepositoryImpl:
             Returns:
                 void
         """
-        if user == "":
+        if user == "" or user is None:
             return
         user = user.replace(".", "-")
         new_request = {
@@ -87,7 +87,7 @@ class RemoteRepositoryImpl:
             Returns:
                 result (boolean): return true if the element is present, false otherwise
         """
-        if user == "":
+        if user == "" or user is None:
             return
         user = user.replace(".", "-")
         response = get_call(self.service_url + "/" + user + "/" + self.hash + "/" + str(value) + ".json")
