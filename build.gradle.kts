@@ -8,7 +8,7 @@ import kotlin.collections.listOf
 import kotlin.streams.toList
 
 plugins {
-    kotlin("jvm") version "1.5.31"
+    kotlin("jvm") version "1.9.25"
     id("ru.vyarus.use-python") version "3.0.0"
     id("io.github.DiLilloDaniele.gradle-python-testing") version "1.4.4"
     alias(libs.plugins.gitSemVer)
