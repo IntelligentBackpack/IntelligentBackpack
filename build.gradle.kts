@@ -29,7 +29,7 @@ buildscript {
     }
 
     dependencies {
-        "classpath"("org.apache.sshd:sshd-core:2.9.2")
+        "classpath"("org.apache.sshd:sshd-core:2.14.0")
         "classpath"("org.apache.sshd:sshd-scp:2.9.2")
     }
 }
